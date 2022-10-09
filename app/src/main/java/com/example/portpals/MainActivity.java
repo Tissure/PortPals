@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     HomeFragment homeFragment = new HomeFragment();
     ChatFragment chatFragment = new ChatFragment();
     EventFragment eventFragment = new EventFragment();
+    ProfileFragment profileFragment = new ProfileFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.event:
                 getSupportFragmentManager().beginTransaction().replace(R.id.container,eventFragment).commit();
+                return true;
+            case R.id.profile:
+                getSupportFragmentManager().beginTransaction().replace(R.id.container,profileFragment).commit();
                 return true;
         }
             return false;
