@@ -13,53 +13,55 @@
         android:id="@+id/textViewRegistration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/create_event"
+        android:text="@string/log_in_title"
         android:textSize="30sp"
         android:layout_gravity="center"
         android:layout_marginTop="65dp"
         />
 
     <EditText
-        android:id="@+id/editEventName"
+        android:id="@+id/editTextPhone"
         android:layout_width="365dp"
         android:layout_height="60dp"
         android:autofillHints=""
         android:ems="10"
-        android:hint="@string/eventName"
-        android:inputType="text"
+        android:hint="@string/phone_number"
+        android:inputType="phone"
         android:textColorHint="#757575"
         android:layout_gravity="center"
         />
 
     <EditText
-        android:id="@+id/editEventDate"
+        android:id="@+id/editTextPassword"
         android:layout_width="365dp"
         android:layout_height="60dp"
         android:autofillHints=""
         android:ems="10"
-        android:hint="@string/eventDate"
-        android:inputType="date"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:minHeight="48dp"
         android:textColorHint="#757575"
-        android:layout_gravity="center" />
 
-    <EditText
-        android:id="@+id/editEventBody"
-        android:layout_width="365dp"
-        android:layout_height="60dp"
-        android:autofillHints=""
-        android:ems="10"
-        android:hint="@string/event_body"
-        android:inputType="text"
-        android:textColorHint="#757575"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
-        android:id="@+id/btnCreateEvent"
+        android:id="@+id/btnLogIn"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="5dp"
-        android:text="@string/create_event"
+        android:text="@string/log_in"
+        android:textSize="25sp" />
+
+    <Button
+        android:id="@+id/btnCreateAccount"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:text="@string/sign_up"
         android:textSize="25sp" />
 
 </LinearLayout>

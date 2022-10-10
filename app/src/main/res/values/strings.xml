@@ -1,5 +1,30 @@
 <resources>
     <string name="app_name">PortPals</string>
     <!-- TODO: Remove or change this placeholder text -->
+    <string name="home">Home</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="linear_layout">Linear Layout</string>
+    <string name="sign_in_sign_up">Log In/Sign Up</string>
+    <string name="log_in_title">PortPals Login</string>
+    <string name="log_in">Log In</string>
+    <string name="sign_up">New User? Sign Up!</string>
+    <string name="registration">PortPals Sign Up</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="email_address">Email Address</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="phone_number">User ID</string>
+    <string name="a_valid_password_has_at_least_8_characters_and_includes_at_lease_one_uppercase_letter_one_lowercase_letter_one_number_and_one_special_character">A valid password has at least 8 characters and includes at lease one uppercase letter, one lowercase letter, one number and one special character.</string>
+    <string name="create_account">Create Account</string>
+
+    <string name="create_event">Create Event</string>
+    <string name="event_name">Event Name</string>
+    <string name="event_date">Date</string>
+    <string name="event_body">Description</string>
+    <string name="event_history">Event History</string>
+
+    <string name="eventName">Name</string>
+    <string name="eventDate">Date</string>
 </resources>
