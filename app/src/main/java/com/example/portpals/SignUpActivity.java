@@ -6,17 +6,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
-public class CreateEventActivity extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_event);
+        setContentView(R.layout.activity_sign_up);
 
-
-        Button toLinear = findViewById(R.id.btnCreateEvent);
+        Button toLinear = findViewById(R.id.btnCreateAccount);
         toLinear.setOnClickListener(view -> {
             Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        });
+
+        Button toSignIn = findViewById(R.id.signInButton);
+        toSignIn.setOnClickListener(view -> {
+            Intent intent = new Intent(this, SignInActivity.class);
             startActivity(intent);
         });
     }

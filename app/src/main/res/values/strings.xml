@@ -1,13 +1,52 @@
 <resources>
     <string name="app_name">PortPals</string>
+    <string name="welcome">Welcome to PortPals!</string>
     <!-- TODO: Remove or change this placeholder text -->
+    <string name="home">Home</string>
+
+    <string name="flightNum">Enter your flight number</string>
+    <string name="start">Start</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <!-- These are placeholder values -->
+    <string name="linear_layout">Linear Layout</string>
+    <string name="sign_in_sign_up">Log In/Sign Up</string>
+    <string name="log_in_title">PortPals Login</string>
+    <string name="log_in">Log In</string>
+    <string name="sign_up">New User? Sign Up!</string>
+    <string name="registration">PortPals Sign Up</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="email_address">Email Address</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="phone_number">User ID</string>
+    <string name="a_valid_password_has_at_least_8_characters_and_includes_at_lease_one_uppercase_letter_one_lowercase_letter_one_number_and_one_special_character">A valid password has at least 8 characters and includes at lease one uppercase letter, one lowercase letter, one number and one special character.</string>
+    <string name="create_account">Create Account</string>
+
+    <string name="create_event">Create Event</string>
+    <string name="event_name">Event Name</string>
+    <string name="event_date">Date</string>
+    <string name="event_body">Description</string>
+    <string name="event_history">Event History</string>
+    <string name="event_join">Join</string>
+
+    <string name="event1name">Smash Bro Party</string>
+    <string name="event1date">Terminal E"</string>
+    <string name="event1desc">Description:
+Anyone who wants to play are welcome. We have 2 switches and 8 controllers.
+If you have your own switch even better!
+Tournament best out of 3! JOIN NOW!</string>
+
+    <string name="eventName">Name</string>
+    <string name="eventDate">Date</string>
+
+    <!-- These are placeholder values for the chat list -->
     <string name="room_title">War room</string>
     <string name="profile_name">Joe Mother</string>
     <string name="profile_picture">profile_picture</string>
     <string name="default_time">60 minutes</string>
     <string name="terminal">Terminal ###</string>
     <string name="participants">5/12</string>
+
 </resources>

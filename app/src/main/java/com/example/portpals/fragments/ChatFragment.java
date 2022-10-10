@@ -29,6 +29,10 @@ public class ChatFragment extends Fragment implements ClickListener {
         chatRoomInfoList.add(new ChatRoomInfo("PogRoom","Pog-man", "2/4", 60, 12, profilePics[0]));
         chatRoomInfoList.add(new ChatRoomInfo("Toxic","Pog-man", "3/4", 45, 16, profilePics[1]));
         chatRoomInfoList.add(new ChatRoomInfo("War Room","Pog-man", "4/4", 20, 17, profilePics[2]));
+
+        chatRoomInfoList.add(new ChatRoomInfo("Legends only","Legend", "2/4", 12, 12, profilePics[0]));
+        chatRoomInfoList.add(new ChatRoomInfo("Living like a chad","Chad", "3/4", 120, 16, profilePics[1]));
+        chatRoomInfoList.add(new ChatRoomInfo("How to be cool","GigaChad", "4/4", 15, 17, profilePics[2]));
     }
 
     private void setChatRoomAdapter() {
