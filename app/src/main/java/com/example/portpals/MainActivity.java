@@ -3,23 +3,15 @@ package com.example.portpals;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.Spinner;
 
+import com.example.portpals.fragments.ChatFragment;
+import com.example.portpals.fragments.EventFragment;
+import com.example.portpals.fragments.HomeFragment;
+import com.example.portpals.fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,32 +27,32 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-    bottomNavBar = findViewById(R.id.bottomNavBar);
-    getSupportFragmentManager().beginTransaction().replace(R.id.container,homeFragment).commit();
+        bottomNavBar = findViewById(R.id.bottomNavBar);
+        getSupportFragmentManager().beginTransaction().replace(R.id.container,homeFragment).commit();
 
+        bottomNavBar.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.home:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container,homeFragment).commit();
+                    return true;
+                case R.id.chat:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container,chatFragment).commit();
+                    return true;
+                case R.id.event:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container,eventFragment).commit();
+                    return true;
+                case R.id.profile:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container,profileFragment).commit();
+                    return true;
+            }
+                return false;
+            }
+        });
+    }
 
-    bottomNavBar.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.home:
-                getSupportFragmentManager().beginTransaction().replace(R.id.container,homeFragment).commit();
-                return true;
-            case R.id.chat:
-                getSupportFragmentManager().beginTransaction().replace(R.id.container,chatFragment).commit();
-                return true;
-            case R.id.event:
-                getSupportFragmentManager().beginTransaction().replace(R.id.container,eventFragment).commit();
-                return true;
-            case R.id.profile:
-                getSupportFragmentManager().beginTransaction().replace(R.id.container,profileFragment).commit();
-                return true;
-        }
-            return false;
-        }
-    });
-
-//        Button toHomeBtn = findViewById(R.id.homeNavBtn);
+    //        Button toHomeBtn = findViewById(R.id.homeNavBtn);
 //        toHomeBtn.setTextColor(Color.parseColor("black"));
 //        toHomeBtn.setBackgroundColor(Color.parseColor("magenta"));
 //        toHomeBtn.setOnClickListener(view -> {
@@ -91,15 +83,5 @@ public class MainActivity extends AppCompatActivity {
 //            Intent intent = new Intent(this, Profile.class);
 //            startActivity(intent);
 //        });
-
-
-
-
-
-
-    }
-
-
-
 
 }
