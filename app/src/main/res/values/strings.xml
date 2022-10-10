@@ -1,7 +1,11 @@
 <resources>
     <string name="app_name">PortPals</string>
+    <string name="welcome">Welcome to PortPals!</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="home">Home</string>
+
+    <string name="flightNum">Enter your flight number</string>
+    <string name="start">Start</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="linear_layout">Linear Layout</string>
@@ -24,6 +28,14 @@
     <string name="event_date">Date</string>
     <string name="event_body">Description</string>
     <string name="event_history">Event History</string>
+    <string name="event_join">Join</string>
+
+    <string name="event1name">Smash Bro Party</string>
+    <string name="event1date">Terminal E"</string>
+    <string name="event1desc">Description:
+Anyone who wants to play are welcome. We have 2 switches and 8 controllers.
+If you have your own switch even better!
+Tournament best out of 3! JOIN NOW!</string>
 
     <string name="eventName">Name</string>
     <string name="eventDate">Date</string>

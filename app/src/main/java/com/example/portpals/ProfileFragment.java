@@ -13,14 +13,11 @@ import android.widget.Button;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
 
-    Button btn;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_profile, container,false);
-//        btn = (Button) rootView.findViewById(R.id.btnToSignUp);
-//        btn.setOnClickListener(this);
+        //Create a path to listen for a click for each button
         rootView.findViewById(R.id.btnToSignUp).setOnClickListener(this);
         rootView.findViewById(R.id.btnEventHistory).setOnClickListener(this);
         // Inflate the layout for this fragment
