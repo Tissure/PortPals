@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.example.portpals.R;
 import com.example.portpals.recycleradapters.ChatRecyclerAdapter;
-import com.example.portpals.services.ChatRoomInfo;
+import com.example.portpals.models.ChatRoomInfo;
 import com.example.portpals.util.ClickListener;
 
 import java.util.ArrayList;

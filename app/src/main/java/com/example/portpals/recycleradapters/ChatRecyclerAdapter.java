@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.portpals.R;
-import com.example.portpals.services.ChatRoomInfo;
+import com.example.portpals.models.ChatRoomInfo;
 import com.example.portpals.util.ClickListener;
 
 import java.util.ArrayList;

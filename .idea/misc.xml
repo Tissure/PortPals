@@ -4,6 +4,8 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Term3/Android/PortPals/PortPals/app/src/main/res/layout/activity_landing_page.xml" value="0.1" />
+        <entry key="..\:/Term3/Android/PortPals/app/src/main/res/layout/activity_sign_in.xml" value="0.1" />
+        <entry key="..\:/Term3/Android/PortPals/app/src/main/res/layout/activity_sign_up.xml" value="0.25" />
       </map>
     </option>
   </component>

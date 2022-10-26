@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.example.portpals.R;
-import com.example.portpals.services.ChatRoomInfo;
+import com.example.portpals.models.ChatRoomInfo;
 
 public class ChatRoomFragment extends Fragment {
 

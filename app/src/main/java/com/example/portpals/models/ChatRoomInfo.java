@@ -1,4 +1,4 @@
-package com.example.portpals.services;
+package com.example.portpals.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
