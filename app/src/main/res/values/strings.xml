@@ -49,4 +49,7 @@ Tournament best out of 3! JOIN NOW!</string>
     <string name="terminal">Terminal ###</string>
     <string name="participants">5/12</string>
 
+    <!-- Bundle Resource Names -->
+    <string name="b_user_info">userInfo</string>
+    <string name="b_user_flight_info">userFlightInfo</string>
 </resources>

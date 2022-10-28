@@ -19,6 +19,9 @@ public class SignInActivity extends AppCompatActivity {
         toMain.setBackgroundColor(Color.parseColor("blue"));
         toMain.setOnClickListener(view -> {
             Intent intent = new Intent(this, MainActivity.class);
+            Bundle userInfo = new Bundle();
+            //TODO fill bundle
+            intent.putExtra(String.valueOf(R.string.b_user_info), userInfo);
             startActivity(intent);
         });
 

@@ -16,6 +16,9 @@ public class SignUpActivity extends AppCompatActivity {
         Button toLinear = findViewById(R.id.btnCreateAccount);
         toLinear.setOnClickListener(view -> {
             Intent intent = new Intent(this, MainActivity.class);
+            Bundle userInfo = new Bundle();
+            //TODO fill bundle
+            intent.putExtra(String.valueOf(R.string.b_user_info), userInfo);
             startActivity(intent);
         });
 

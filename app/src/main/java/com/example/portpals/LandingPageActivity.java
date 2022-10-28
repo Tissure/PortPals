@@ -27,6 +27,9 @@ public class LandingPageActivity extends AppCompatActivity {
         toMain.setBackgroundColor(Color.parseColor("blue"));
         toMain.setOnClickListener(view -> {
             Intent intent = new Intent(this, MainActivity.class);
+            Bundle userFlightInfo = new Bundle();
+            //TODO fill bundle
+            intent.putExtra(String.valueOf(R.string.b_user_flight_info), userFlightInfo);
             startActivity(intent);
         });
     }
