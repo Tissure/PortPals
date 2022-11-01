@@ -1,65 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="-24dp"
 
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/textViewRegistration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:text="@string/create_event"
         android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.099" />
+
+    <TextView
+        android:id="@+id/textViewRegistration2"
+        android:layout_width="140dp"
+        android:layout_height="47dp"
         android:layout_gravity="center"
-        android:layout_marginTop="65dp"
-        />
+        android:text="@string/selectTime"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/spinner1"
+        app:layout_constraintHorizontal_bias="0.617"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editEventName"
+        app:layout_constraintVertical_bias="0.064" />
 
     <EditText
         android:id="@+id/editEventName"
-        android:layout_width="365dp"
-        android:layout_height="60dp"
+        android:layout_width="200dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="24dp"
         android:autofillHints=""
         android:ems="10"
-        android:hint="@string/eventName"
+        android:hint="@string/eventTitle"
         android:inputType="text"
         android:textColorHint="#757575"
-        android:layout_gravity="center"
-        />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.355"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewRegistration"
+        app:layout_constraintVertical_bias="0.029" />
 
-    <EditText
-        android:id="@+id/editEventDate"
-        android:layout_width="365dp"
-        android:layout_height="60dp"
-        android:autofillHints=""
-        android:ems="10"
-        android:hint="@string/eventDate"
-        android:inputType="date"
-        android:textColorHint="#757575"
-        android:layout_gravity="center" />
+    <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="134dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="68dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editEventName"
+        app:layout_constraintVertical_bias="0.046"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <EditText
         android:id="@+id/editEventBody"
-        android:layout_width="365dp"
-        android:layout_height="60dp"
+        android:layout_width="272dp"
+        android:layout_height="247dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
         android:autofillHints=""
         android:ems="10"
         android:hint="@string/event_body"
         android:inputType="text"
         android:textColorHint="#757575"
-        android:layout_gravity="center" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner1"
+        app:layout_constraintVertical_bias="0.11" />
 
     <Button
-        android:id="@+id/btnCreateEvent"
-        android:layout_width="300dp"
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="5dp"
-        android:text="@string/create_event"
-        android:textSize="25sp" />
+        android:layout_marginBottom="56dp"
+        android:onClick="createEventPart2"
+        android:text="@string/nextBtn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.851"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editEventBody"
+        app:layout_constraintVertical_bias="0.936" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
