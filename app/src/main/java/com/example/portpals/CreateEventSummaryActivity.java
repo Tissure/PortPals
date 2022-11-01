@@ -41,6 +41,8 @@ public class CreateEventSummaryActivity extends AppCompatActivity {
     public void createEventPart5(View v) {
         Intent intent = new Intent(this, MainActivity.class);
 
+        //TODO: Connect location data to event
+        //TODO: Connect chat to event
         //TODO: take the data from the bundle using strings and add to firebase structure
 
         startActivity(intent);
