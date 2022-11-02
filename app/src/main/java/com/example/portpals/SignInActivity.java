@@ -3,14 +3,10 @@ package com.example.portpals;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-import com.example.portpals.models.User;
-import com.google.firebase.auth.FirebaseUser;
+import android.widget.Toast;
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -20,8 +16,6 @@ public class SignInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_in);
 
         Button toMain = findViewById(R.id.btnLogIn);
-        toMain.setTextColor(Color.parseColor("black"));
-        toMain.setBackgroundColor(Color.parseColor("blue"));
         toMain.setOnClickListener(view -> {
             // sign user in with firebase auth
             signUserIn();
@@ -47,7 +41,7 @@ public class SignInActivity extends AppCompatActivity {
                     Intent intent = new Intent(this, MainActivity.class);
                     startActivity(intent);
                 } else {
-                    System.out.println("Failed to authenticate user");
+                    Toast.makeText(this, "Invalid user name or password!", Toast.LENGTH_LONG).show();
                 }
         });
     }

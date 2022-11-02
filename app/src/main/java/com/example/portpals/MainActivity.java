@@ -21,12 +21,12 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    private BottomNavigationView bottomNavBar;
-    private Map<Integer, Fragment> fragmentMap;
-
     public static final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     public static final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     public static final DatabaseReference databaseReference = firebaseDatabase.getReference();
+
+    private BottomNavigationView bottomNavBar;
+    private Map<Integer, Fragment> fragmentMap;
 
     public MainActivity() {
         fragmentMap = new HashMap<>();

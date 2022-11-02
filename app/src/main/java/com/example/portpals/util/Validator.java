@@ -71,6 +71,7 @@ public class Validator {
         }
         if (!hasNumber || !hasLowerCaseLetter || !hasUpperCaseLetter || !hasSpecialCharacter) {
             passwordTextView.setError(invalidPasswordMessage);
+            return false;
         }
         return true;
     }

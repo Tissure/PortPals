@@ -6,10 +6,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.portpals.models.User;
 import com.example.portpals.util.Validator;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -46,7 +49,7 @@ public class SignUpActivity extends AppCompatActivity {
         // add go back to sign in button functionality
         Button toSignIn = findViewById(R.id.signInButton);
         toSignIn.setOnClickListener(view -> {
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, SignInActivity.class);
             startActivity(intent);
         });
     }
@@ -60,30 +63,51 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void authenticateUser() {
-        // create the user data to put in the database
-        User newUser = new User();
-        newUser.setEmail(emailTextView.getText().toString());
-        newUser.setPassword(passwordTextView.getText().toString());
-        newUser.setDisplayName(displayNameTextView.getText().toString());
-        newUser.setFirstName(firstNameTextView.getText().toString());
-        newUser.setLastName(lastNameTextView.getText().toString());
+        String email = emailTextView.getText().toString();
+        String password = passwordTextView.getText().toString();
 
-        // add the user to the database after creating a firebase user
-        MainActivity.firebaseAuth.createUserWithEmailAndPassword(newUser.getEmail(), newUser.getPassword())
+        // create a firebase user
+        MainActivity.firebaseAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this, task -> {
                 if (task.isSuccessful()) {
+                    // get firebase user and put them into the database
                     FirebaseUser firebaseUser = MainActivity.firebaseAuth.getCurrentUser();
-
-                    // put the user in the Users node with an id of the uid created by the firebase user
                     String key = firebaseUser.getUid();
-                    MainActivity.databaseReference.child("Users").child(key).setValue(newUser);
+
+                    // attempt to put the new user in the database
+                    User newUser = createNewUser(firebaseUser);
+                    Task putUserInDB = MainActivity.databaseReference.child("Users").child(key).setValue(newUser);
+                    if (!putUserInDB.isSuccessful()) {
+                        String errMsg = putUserInDB.getException().getMessage();
+                        Toast.makeText(this, errMsg,  Toast.LENGTH_LONG).show();
+                        MainActivity.firebaseAuth.getCurrentUser().delete();
+                        return;
+                    }
 
                     Intent intent = new Intent(this, MainActivity.class);
                     startActivity(intent);
                 } else {
-                    System.out.println("Failed to authenticate user");
+                    Toast.makeText(this, "Failed to create user!", Toast.LENGTH_LONG).show();
                 }
         });
+    }
+
+    private User createNewUser(FirebaseUser firebaseUser) {
+        // set the firebase user display name to the one entered in the form
+        UserProfileChangeRequest.Builder builder = new UserProfileChangeRequest.Builder();
+        builder.setDisplayName(displayNameTextView.getText().toString());
+        firebaseUser.updateProfile(builder.build());
+
+        // set all the information to a new user instance
+        User user = new User();
+        user.setFirstName(firstNameTextView.getText().toString());
+        user.setLastName(lastNameTextView.getText().toString());
+        user.setEmail(firebaseUser.getEmail());
+        user.setDisplayName(firebaseUser.getDisplayName());
+        user.setFirstName(firstNameTextView.getText().toString());
+        user.setLastName(lastNameTextView.getText().toString());
+
+        return user;
     }
 
 }
