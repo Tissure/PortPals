@@ -18,12 +18,14 @@ import org.json.JSONObject;
 import java.util.Date;
 
 public class FlightInfoManager extends ViewModel {
-    private final String url = "http://api.aviationstack.com/v1/flights?access_key=";
-    private final String flightNoTag = "&flight_number=";
-    private final String flightIataTag = "&flight_iata=";
-    private final String flightIcaoTag = "&flight_icao=";
     private static FlightInfoManager instance = null;
     private static final String TAG = "FlightInfoViewModel";
+
+    private final String URL = "http://api.aviationstack.com/v1/flights?access_key=";
+    private final String FLIGHT_NO_TAG = "&flight_number=";
+    private final String FLIGHT_IATA_TAG = "&flight_iata=";
+    private final String FLIGHT_ICAO_TAG = "&flight_icao=";
+    private final String LIMIT = "&limit=1";
 
     public RequestQueue requestQueue;
 
@@ -66,17 +68,17 @@ public class FlightInfoManager extends ViewModel {
     }
     // TODO: Implement the ViewModel
 
-    public void getFlightInfo(String flightNo, final RequestListener<String> listener) {
+    public void getFlightInfo(String flightNo, final RequestListener<JSONObject> listener) {
 
         //TODO filter entered flightNo for: No Code, IATA Code, ICAO Code
-        String requestURL = url + Secrets.KEY + flightNoTag + flightNo;
+        String requestURL = URL + Secrets.KEY + FLIGHT_IATA_TAG + flightNo + LIMIT;
         Log.d("URL", requestURL);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, requestURL, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Log.d(TAG + ": ", "somePostRequest Response : " + response.toString());
                 if (null != response.toString())
-                    listener.getResult(response.toString());
+                    listener.getResult(response);
             }
         },
                 new Response.ErrorListener() {
@@ -84,7 +86,7 @@ public class FlightInfoManager extends ViewModel {
                     public void onErrorResponse(VolleyError error) {
                         if (null != error.networkResponse) {
                             Log.d(TAG + ": ", "Error Response code: " + error.networkResponse.statusCode);
-                            listener.getResult(String.valueOf(false));
+                            listener.getResult(null);
                         }
                     }
                 });

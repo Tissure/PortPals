@@ -17,6 +17,11 @@ import com.example.portpals.R;
 import com.example.portpals.util.FlightInfoManager;
 import com.example.portpals.util.RequestListener;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Map;
+
 public class FlightInfoFragment extends Fragment {
 
     public static FlightInfoFragment newInstance() {
@@ -29,13 +34,20 @@ public class FlightInfoFragment extends Fragment {
         System.out.println("FlightInfoFrag made");
         View view = inflater.inflate(R.layout.fragment_flight_info, container, false);
 
-        FlightInfoManager.getInstance().getFlightInfo("791", new RequestListener<String>() {
+        FlightInfoManager.getInstance().getFlightInfo("AC791", new RequestListener<JSONObject>() {
             @Override
-            public void getResult(String obj) {
-                System.out.println("Results");
-                Log.d("Result", obj);
-                TextView departure = view.findViewById(R.id.departure_airport);
-                departure.setText(obj);
+            public void getResult(JSONObject obj) {
+                try {
+                    if (obj != null) {
+                        System.out.println("Results");
+                        Log.d("Result", obj.toString());
+                        Map<String, Object> map = obj.toMap();
+                        TextView departure = view.findViewById(R.id.departure_airport);
+                        departure.setText();
+                    }
+                }catch (JSONException e){
+                    Log.d("JSON Exception", e.getMessage());
+                }
             }
         });
 
