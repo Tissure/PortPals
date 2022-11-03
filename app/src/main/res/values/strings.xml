@@ -50,4 +50,7 @@ Tournament best out of 3! JOIN NOW!</string>
     <string name="participants">5/12</string>
     <string name="already_have_an_account_click_here_to_sign_in">Already have an account? Click here to sign in</string>
 
+
+    <string name="flight_scheduled">Scheduled</string>
+    <string name="temp">TEMP</string>
 </resources>
