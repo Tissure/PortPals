@@ -70,5 +70,8 @@ Tournament best out of 3! JOIN NOW!</string>
         <item>2 hours</item>
         <item>2.5 hours</item>
     </string-array>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="lat">Latitude:</string>
+    <string name="lng">Longitude</string>
 
 </resources>

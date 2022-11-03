@@ -29,6 +29,14 @@ public class CreateEventSummaryActivity extends AppCompatActivity {
         TextView description = findViewById(R.id.textView3);
         description.setText(desc);
 
+        String lat = bundle.getString("lat");
+        TextView latitude = findViewById(R.id.lat);
+        latitude.setText(lat);
+
+        String lng = bundle.getString("lng");
+        TextView longitude = findViewById(R.id.lng);
+        longitude.setText(lng);
+
         ArrayList<String> result3 = bundle.getStringArrayList("tags");
         TextView reason = findViewById(R.id.textView4);
         StringBuilder s = new StringBuilder();
