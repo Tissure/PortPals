@@ -10,6 +10,7 @@ import com.example.portpals.fragments.ChatFragment;
 import com.example.portpals.fragments.EventFragment;
 import com.example.portpals.fragments.HomeFragment;
 import com.example.portpals.fragments.ProfileFragment;
+import com.example.portpals.util.FlightInfoManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -40,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        FlightInfoManager.getInstance(this);
 
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         if (currentUser != null) {
