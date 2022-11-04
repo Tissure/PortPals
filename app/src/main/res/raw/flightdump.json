@@ -1,0 +1,61 @@
+{
+    "pagination": {
+        "limit": 100,
+        "offset": 0,
+        "count": 1,
+        "total": 1
+    },
+    "data": [
+        {
+            "flight_date": "2022-11-02",
+            "flight_status": "landed",
+            "departure": {
+                "airport": "Vancouver International",
+                "timezone": "America\/Vancouver",
+                "iata": "YVR",
+                "icao": "CYVR",
+                "terminal": "D",
+                "gate": "B21",
+                "delay": 66,
+                "scheduled": "2022-11-02T22:50:00+00:00",
+                "estimated": "2022-11-02T22:50:00+00:00",
+                "actual": "2022-11-02T23:55:00+00:00",
+                "estimated_runway": "2022-11-02T23:55:00+00:00",
+                "actual_runway": "2022-11-02T23:55:00+00:00"
+            },
+            "arrival": {
+                "airport": "Lester B. Pearson International",
+                "timezone": "America\/Toronto",
+                "iata": "YYZ",
+                "icao": "CYYZ",
+                "terminal": "3",
+                "gate": "B2A",
+                "baggage": "4",
+                "delay": 56,
+                "scheduled": "2022-11-03T06:20:00+00:00",
+                "estimated": "2022-11-03T06:20:00+00:00",
+                "actual": "2022-11-03T07:16:00+00:00",
+                "estimated_runway": "2022-11-03T07:16:00+00:00",
+                "actual_runway": "2022-11-03T07:16:00+00:00"
+            },
+            "airline": {
+                "name": "Flair Airlines",
+                "iata": "F8",
+                "icao": "FLE"
+            },
+            "flight": {
+                "number": "225",
+                "iata": "F8225",
+                "icao": "FLE225",
+                "codeshared": null
+            },
+            "aircraft": {
+                "registration": "C-FLQZ",
+                "iata": "B38M",
+                "icao": "B38M",
+                "icao24": "C01EC6"
+            },
+            "live": null
+        }
+    ]
+}

@@ -1,11 +1,9 @@
 
-package com.example;
+package com.example.portpals.models.flight;
 
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-@Generated("jsonschema2pojo")
 public class Flight {
 
     @SerializedName("number")
