@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 public class FlightInfoFragment extends Fragment {
@@ -59,8 +63,30 @@ public class FlightInfoFragment extends Fragment {
     }
 
     private void populateFlightInfo(View view, FlightInfo flight) {
-        TextView departure = view.findViewById(R.id.departure_airport);
-        departure.setText(flight.getDeparture().getAirport());
+        TextView departureTextView = view.findViewById(R.id.departure_airport);
+        departureTextView.setText(flight.getDeparture().getAirport());
+        TextView arrivalTextView = view.findViewById(R.id.arrival_airport);
+        arrivalTextView.setText(flight.getArrival().getAirport());
+
+        TextView departureTimeTextView = view.findViewById(R.id.departure_time);
+        String departureTime = DateFormat.format("HH:mm", parseDate(flight.getDeparture().getScheduled())).toString();
+        departureTimeTextView.setText(departureTime);
+
+        TextView arrivalTimeTextView = view.findViewById(R.id.arrival_time);
+        String arrivalTime = DateFormat.format("HH:mm",parseDate(flight.getArrival().getScheduled())).toString();
+        arrivalTimeTextView.setText( arrivalTime);
+
+        Log.d("Populate: ", departureTextView.getText().toString());
+        Log.d("Populate: ", arrivalTimeTextView.getText().toString());
+    }
+
+    private Date parseDate(String date){
+        try{
+            return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").parse(date);
+        }catch (ParseException e){
+            Log.d("Parse", e.getMessage());
+        }
+        return null;
     }
 
     private String loadJSONFromFile() {

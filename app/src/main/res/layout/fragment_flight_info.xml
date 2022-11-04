@@ -9,46 +9,70 @@
 
     tools:context=".fragments.FlightInfoFragment">
 
-    <TextView
-        android:id="@+id/departure_airport"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/temp"
-        android:textSize="34sp"/>
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="50px"
+        android:outlineAmbientShadowColor="@color/black"
+        android:rowCount="2">
 
-    <TextView
-        android:id="@+id/arrival_airport"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/temp"
-        android:textSize="34sp"/>
 
-    <TextView
-        android:id="@+id/departure_scheduled"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/flight_scheduled"
-        android:textSize="24sp"/>
+        <TextView
+            android:id="@+id/departure_airport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="2"
+            android:layout_gravity="center"
+            android:text="@string/temp"
+            android:textSize="5sp" />
 
-    <TextView
-        android:id="@+id/departure_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/temp"
-        android:textSize="24sp"/>
+        <TextView
+            android:id="@+id/arrival_airport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="2"
+            android:layout_columnSpan="2"
+            android:layout_gravity="center"
+            android:text="@string/temp"
+            android:textSize="5sp" />
 
-    <TextView
-        android:id="@+id/arrival_scheduled"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/flight_scheduled"
-        android:textSize="24sp"/>
 
-    <TextView
-        android:id="@+id/arrival_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/temp"
-        android:textSize="24sp"/>
+        <TextView
+            android:id="@+id/departure_scheduled"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="1"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:text="@string/flight_scheduled"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/departure_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_gravity="end"
+            android:text="@string/temp"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/arrival_scheduled"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:text="@string/flight_scheduled"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/arrival_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="0.25"
+            android:layout_gravity="end"
+            android:text="@string/temp"
+            android:textSize="16sp" />
+
+    </GridLayout>
 
 </FrameLayout>
