@@ -40,21 +40,21 @@ public class FlightInfoFragment extends Fragment {
         System.out.println("FlightInfoFrag made");
         View view = inflater.inflate(R.layout.fragment_flight_info, container, false);
 
-//        try {
-//            JSONObject obj = new JSONObject(loadJSONFromFile());
-//            JSONArray data = obj.getJSONArray("data");
-//            FlightInfo flight;
-//            flight = new Gson().fromJson(data.getJSONObject(0).toString(), FlightInfo.class);
-//            populateFlightInfo(view, flight);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            JSONObject obj = new JSONObject(loadJSONFromFile());
+            JSONArray data = obj.getJSONArray("data");
+            FlightInfo flight;
+            flight = new Gson().fromJson(data.getJSONObject(0).toString(), FlightInfo.class);
+            populateFlightInfo(view, flight);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         //TODO RENABLE
-        String flightNo = "AC793";
-        FlightInfoManager fm = FlightInfoManager.getInstance();
-        fm.getFlight(flightNo).observe(getActivity(), flightInfo -> {
-            populateFlightInfo(view, flightInfo);
-        });
+//        String flightNo = "AC793";
+//        FlightInfoManager fm = FlightInfoManager.getInstance();
+//        fm.getFlight(flightNo).observe(getActivity(), flightInfo -> {
+//            populateFlightInfo(view, flightInfo);
+//        });
         return view;
     }
 
