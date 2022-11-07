@@ -2,6 +2,7 @@ package com.example.portpals.util;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -51,7 +52,8 @@ public class AirportsInfoManager  extends ViewModel {
         if(departure == null){
             departure = new MutableLiveData<Airport>();
             Gson gson = new Gson();
-            Query departureAirport =  MainActivity.databaseReference.orderByChild(MainActivity.getContext().getString(R.string.fb_airports)).equalTo(departureCode);
+            Log.d("Airports: ", MainActivity.getContext().getString(R.string.fb_airports));
+            Query departureAirport =  MainActivity.databaseReference.orderByChild("iata").equalTo(departureCode);
             departureAirport.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DataSnapshot> task) {

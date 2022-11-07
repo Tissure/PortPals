@@ -59,6 +59,8 @@ public class FlightInfoFragment extends Fragment {
             AirportsInfoManager.getInstance().getArrival(flight.getArrival().getIata()).observe(getActivity(), arrival ->{
                 popAirport(view, arrival, R.string.popArrival);
             });
+//            popAirport(view, AirportsInfoManager.getInstance().getDeparture(flight.getDeparture().getIata()).getValue(), R.string.popDeparture);
+//            popAirport(view, AirportsInfoManager.getInstance().getArrival(flight.getArrival().getIata()).getValue(), R.string.popArrival);
         } catch (JSONException e) {
             e.printStackTrace();
         }
