@@ -1,8 +1,10 @@
 package com.example.portpals.util;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -13,9 +15,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.portpals.MainActivity;
+import com.example.portpals.R;
 import com.example.portpals.env.Secrets;
-import com.example.portpals.models.flight.Flight;
+import com.example.portpals.models.Airport;
 import com.example.portpals.models.flight.FlightInfo;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.Query;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -29,6 +37,8 @@ public class FlightInfoManager extends ViewModel {
     private static final String TAG = "FlightInfoViewModel";
 
     private MutableLiveData<FlightInfo> flight;
+    private MutableLiveData<Airport> departure;
+    private MutableLiveData<Airport> arrival;
 
     private final String URL = "http://api.aviationstack.com/v1/flights?access_key=";
     private final String FLIGHT_NO_TAG = "&flight_number=";
@@ -69,6 +79,7 @@ public class FlightInfoManager extends ViewModel {
                     try {
                         JSONArray data = response.getJSONArray("data");
                         flight.setValue(new Gson().fromJson(data.getJSONObject(0).toString(), FlightInfo.class));
+                        AirportsInfoManager.getInstance(flight.getValue().getDeparture().getIata(), flight.getValue().getArrival().getIata());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -94,4 +105,5 @@ public class FlightInfoManager extends ViewModel {
         }
         return flight;
     }
+
 }

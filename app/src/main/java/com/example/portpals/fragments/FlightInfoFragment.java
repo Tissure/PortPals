@@ -16,7 +16,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.portpals.R;
+import com.example.portpals.models.Airport;
 import com.example.portpals.models.flight.FlightInfo;
+import com.example.portpals.util.AirportsInfoManager;
 import com.example.portpals.util.FlightInfoManager;
 import com.example.portpals.util.RequestListener;
 import com.google.gson.Gson;
@@ -49,7 +51,14 @@ public class FlightInfoFragment extends Fragment {
             JSONArray data = obj.getJSONArray("data");
             FlightInfo flight;
             flight = new Gson().fromJson(data.getJSONObject(0).toString(), FlightInfo.class);
+            AirportsInfoManager.getInstance(flight.getDeparture().getIata(), flight.getArrival().getIata());
             populateFlightInfo(view, flight);
+            AirportsInfoManager.getInstance().getDeparture().observe(getActivity(), departure ->{
+                popAirport(view, departure, R.string.popDeparture);
+            });
+            AirportsInfoManager.getInstance().getArrival().observe(getActivity(), arrival ->{
+                popAirport(view, arrival, R.string.popDeparture);
+            });
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -64,9 +73,9 @@ public class FlightInfoFragment extends Fragment {
 
     private void populateFlightInfo(View view, FlightInfo flight) {
         TextView departureTextView = view.findViewById(R.id.departure_airport);
-        departureTextView.setText(flight.getDeparture().getAirport());
+        departureTextView.setText(flight.getDeparture().getIata());
         TextView arrivalTextView = view.findViewById(R.id.arrival_airport);
-        arrivalTextView.setText(flight.getArrival().getAirport());
+        arrivalTextView.setText(flight.getArrival().getIata());
 
         TextView departureTimeTextView = view.findViewById(R.id.departure_time);
         String departureTime = DateFormat.format("HH:mm", parseDate(flight.getDeparture().getScheduled())).toString();
@@ -78,6 +87,20 @@ public class FlightInfoFragment extends Fragment {
 
         Log.d("Populate: ", departureTextView.getText().toString());
         Log.d("Populate: ", arrivalTimeTextView.getText().toString());
+    }
+
+    private void popAirport(View view, Airport airport, int type){
+        if(type == R.string.popDeparture){
+            TextView city = view.findViewById(R.id.departure_city);
+            city.setText(airport.getCity());
+            TextView timeZone = view.findViewById(R.id.departure_timezone);
+            timeZone.setText(airport.getTimezone());
+        } else if (type == R.string.popArrival){
+            TextView city = view.findViewById(R.id.arrival_city);
+            city.setText(airport.getCity());
+            TextView timeZone = view.findViewById(R.id.arrival_timezone);
+            timeZone.setText(airport.getTimezone());
+        }
     }
 
     private Date parseDate(String date){
