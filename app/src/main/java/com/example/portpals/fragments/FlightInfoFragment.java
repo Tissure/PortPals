@@ -53,11 +53,11 @@ public class FlightInfoFragment extends Fragment {
             flight = new Gson().fromJson(data.getJSONObject(0).toString(), FlightInfo.class);
             AirportsInfoManager.getInstance(flight.getDeparture().getIata(), flight.getArrival().getIata());
             populateFlightInfo(view, flight);
-            AirportsInfoManager.getInstance().getDeparture().observe(getActivity(), departure ->{
+            AirportsInfoManager.getInstance().getDeparture(flight.getDeparture().getIata()).observe(getActivity(), departure ->{
                 popAirport(view, departure, R.string.popDeparture);
             });
-            AirportsInfoManager.getInstance().getArrival().observe(getActivity(), arrival ->{
-                popAirport(view, arrival, R.string.popDeparture);
+            AirportsInfoManager.getInstance().getArrival(flight.getArrival().getIata()).observe(getActivity(), arrival ->{
+                popAirport(view, arrival, R.string.popArrival);
             });
         } catch (JSONException e) {
             e.printStackTrace();

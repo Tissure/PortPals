@@ -3,6 +3,7 @@ package com.example.portpals;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     public static final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     public static final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     public static final DatabaseReference databaseReference = firebaseDatabase.getReference();
+    public static Context context;
 
     private BottomNavigationView bottomNavBar;
     private Map<Integer, Fragment> fragmentMap;
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        MainActivity.context = getApplicationContext();
         FlightInfoManager.getInstance(this);
 
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
@@ -65,4 +68,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public static Context getContext(){
+        return context;
+    }
 }

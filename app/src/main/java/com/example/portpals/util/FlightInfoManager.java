@@ -79,7 +79,8 @@ public class FlightInfoManager extends ViewModel {
                     try {
                         JSONArray data = response.getJSONArray("data");
                         flight.setValue(new Gson().fromJson(data.getJSONObject(0).toString(), FlightInfo.class));
-                        AirportsInfoManager.getInstance(flight.getValue().getDeparture().getIata(), flight.getValue().getArrival().getIata());
+                        AirportsInfoManager.getInstance().getDeparture(flight.getValue().getDeparture().getIata());
+                        AirportsInfoManager.getInstance().getArrival(flight.getValue().getArrival().getIata());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

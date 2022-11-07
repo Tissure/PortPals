@@ -31,9 +31,8 @@ public class AirportsInfoManager  extends ViewModel {
     public static synchronized AirportsInfoManager getInstance(String departureCode, String arrivalCode) {
         if (null == instance){
             instance = new AirportsInfoManager();
-            instance.getAirports(departureCode, arrivalCode);
-            //get Departure
-            //get Arrival
+            instance.getDeparture(departureCode);
+            instance.getArrival(arrivalCode);
         }
         return instance;
     }
@@ -47,43 +46,40 @@ public class AirportsInfoManager  extends ViewModel {
         return instance;
     }
 
-    public void getAirports(String departureCode, String arrivalCode){
-        Query departureAirport =  MainActivity.databaseReference.orderByChild(MainActivity.getContext().getString(R.string.fb_airports)).equalTo(departureCode);
-        Query arrivalAirport =  MainActivity.databaseReference.orderByChild(Resources.getSystem().getString(R.string.fb_airports)).equalTo(arrivalCode);
-        Gson gson = new Gson();
 
-        departureAirport.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if(task.isSuccessful()){
-                    for(DataSnapshot child : task.getResult().getChildren()){
-                        departure.setValue(gson.fromJson(gson.toJson(child.getValue()), Airport.class));
+    public LiveData<Airport> getDeparture(String departureCode) {
+        if(departure == null){
+            departure = new MutableLiveData<Airport>();
+            Gson gson = new Gson();
+            Query departureAirport =  MainActivity.databaseReference.orderByChild(MainActivity.getContext().getString(R.string.fb_airports)).equalTo(departureCode);
+            departureAirport.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    if(task.isSuccessful()){
+                        for(DataSnapshot child : task.getResult().getChildren()){
+                            departure.setValue(gson.fromJson(gson.toJson(child.getValue()), Airport.class));
+                        }
                     }
                 }
-            }
-        });
-
-        arrivalAirport.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if(task.isSuccessful()){
-                    for(DataSnapshot child : task.getResult().getChildren()){
-                        arrival.setValue(gson.fromJson(gson.toJson(child.getValue()), Airport.class));
-                    }
-                }
-            }
-        });
-    }
-
-    public LiveData<Airport> getDeparture() {
-        if (instance == null) {
-            return getInstance().getDeparture();
+            });
         }
         return departure;
     }
-    public LiveData<Airport> getArrival() {
-        if (instance == null) {
-            return getInstance().getArrival();
+    public LiveData<Airport> getArrival(String arrivalCode) {
+        if(arrival == null){
+            arrival = new MutableLiveData<Airport>();
+            Query arrivalAirport =  MainActivity.databaseReference.orderByChild(MainActivity.getContext().getString(R.string.fb_airports)).equalTo(arrivalCode);
+            Gson gson = new Gson();
+            arrivalAirport.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    if(task.isSuccessful()){
+                        for(DataSnapshot child : task.getResult().getChildren()){
+                            arrival.setValue(gson.fromJson(gson.toJson(child.getValue()), Airport.class));
+                        }
+                    }
+                }
+            });
         }
         return arrival;
     }
