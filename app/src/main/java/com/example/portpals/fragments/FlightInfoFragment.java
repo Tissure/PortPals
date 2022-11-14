@@ -46,6 +46,7 @@ public class FlightInfoFragment extends Fragment {
         System.out.println("FlightInfoFrag made");
         View view = inflater.inflate(R.layout.fragment_flight_info, container, false);
 
+        //TODO DISABLE
         try {
             JSONObject obj = new JSONObject(loadJSONFromFile());
             JSONArray data = obj.getJSONArray("data");
@@ -59,16 +60,22 @@ public class FlightInfoFragment extends Fragment {
             AirportsInfoManager.getInstance().getArrival(flight.getArrival().getIata()).observe(getActivity(), arrival ->{
                 popAirport(view, arrival, R.string.popArrival);
             });
-//            popAirport(view, AirportsInfoManager.getInstance().getDeparture(flight.getDeparture().getIata()).getValue(), R.string.popDeparture);
-//            popAirport(view, AirportsInfoManager.getInstance().getArrival(flight.getArrival().getIata()).getValue(), R.string.popArrival);
-        } catch (JSONException e) {
+       } catch (JSONException e) {
             e.printStackTrace();
         }
         //TODO RENABLE
 //        String flightNo = "AC793";
 //        FlightInfoManager fm = FlightInfoManager.getInstance();
+//
 //        fm.getFlight(flightNo).observe(getActivity(), flightInfo -> {
+//            AirportsInfoManager.getInstance(flightInfo.getDeparture().getIata(), flightInfo.getArrival().getIata());
 //            populateFlightInfo(view, flightInfo);
+//            AirportsInfoManager.getInstance().getDeparture(flightInfo.getDeparture().getIata()).observe(getActivity(), departure -> {
+//                popAirport(view, departure, R.string.popDeparture);
+//            });
+//            AirportsInfoManager.getInstance().getArrival(flightInfo.getArrival().getIata()).observe(getActivity(), arrival -> {
+//                popAirport(view, arrival, R.string.popArrival);
+//            });
 //        });
         return view;
     }
@@ -84,31 +91,31 @@ public class FlightInfoFragment extends Fragment {
         departureTimeTextView.setText(departureTime);
 
         TextView arrivalTimeTextView = view.findViewById(R.id.arrival_time);
-        String arrivalTime = DateFormat.format("HH:mm",parseDate(flight.getArrival().getScheduled())).toString();
-        arrivalTimeTextView.setText( arrivalTime);
+        String arrivalTime = DateFormat.format("HH:mm", parseDate(flight.getArrival().getScheduled())).toString();
+        arrivalTimeTextView.setText(arrivalTime);
 
         Log.d("Populate: ", departureTextView.getText().toString());
         Log.d("Populate: ", arrivalTimeTextView.getText().toString());
     }
 
-    private void popAirport(View view, Airport airport, int type){
-        if(type == R.string.popDeparture){
+    private void popAirport(View view, Airport airport, int type) {
+        if (type == R.string.popDeparture) {
             TextView city = view.findViewById(R.id.departure_city);
             city.setText(airport.getCity());
             TextView timeZone = view.findViewById(R.id.departure_timezone);
-            timeZone.setText(airport.getTimezone());
-        } else if (type == R.string.popArrival){
+            timeZone.setText(String.valueOf(airport.getTimeZone()));
+        } else if (type == R.string.popArrival) {
             TextView city = view.findViewById(R.id.arrival_city);
             city.setText(airport.getCity());
             TextView timeZone = view.findViewById(R.id.arrival_timezone);
-            timeZone.setText(airport.getTimezone());
+            timeZone.setText(String.valueOf(airport.getTimeZone()));
         }
     }
 
-    private Date parseDate(String date){
-        try{
+    private Date parseDate(String date) {
+        try {
             return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").parse(date);
-        }catch (ParseException e){
+        } catch (ParseException e) {
             Log.d("Parse", e.getMessage());
         }
         return null;

@@ -17,6 +17,7 @@ import com.example.portpals.models.Airport;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.gson.Gson;
 
@@ -53,13 +54,15 @@ public class AirportsInfoManager  extends ViewModel {
             departure = new MutableLiveData<Airport>();
             Gson gson = new Gson();
             Log.d("Airports: ", MainActivity.getContext().getString(R.string.fb_airports));
-            Query departureAirport =  MainActivity.databaseReference.orderByChild("iata").equalTo(departureCode);
+            DatabaseReference airportRef = MainActivity.databaseReference.child("Airports");
+            Query departureAirport = airportRef.orderByChild("iata").equalTo(departureCode);
             departureAirport.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DataSnapshot> task) {
                     if(task.isSuccessful()){
                         for(DataSnapshot child : task.getResult().getChildren()){
-                            departure.setValue(gson.fromJson(gson.toJson(child.getValue()), Airport.class));
+                            Airport airport = gson.fromJson(gson.toJson(child.getValue()), Airport.class);
+                            departure.setValue(airport);
                         }
                     }
                 }
@@ -70,7 +73,8 @@ public class AirportsInfoManager  extends ViewModel {
     public LiveData<Airport> getArrival(String arrivalCode) {
         if(arrival == null){
             arrival = new MutableLiveData<Airport>();
-            Query arrivalAirport =  MainActivity.databaseReference.orderByChild(MainActivity.getContext().getString(R.string.fb_airports)).equalTo(arrivalCode);
+            DatabaseReference airportRef = MainActivity.databaseReference.child("Airports");
+            Query arrivalAirport = airportRef.orderByChild("iata").equalTo(arrivalCode);
             Gson gson = new Gson();
             arrivalAirport.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                 @Override

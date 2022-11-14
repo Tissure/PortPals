@@ -34,9 +34,9 @@ public class Airport {
     @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("timezone")
+    @SerializedName("timeZone")
     @Expose
-    private Integer timezone;
+    private Integer timeZone;
 
     public String getCity() {
         return city;
@@ -110,12 +110,12 @@ public class Airport {
         this.name = name;
     }
 
-    public Integer getTimezone() {
-        return timezone;
+    public Integer getTimeZone() {
+        return timeZone;
     }
 
-    public void setTimezone(Integer timezone) {
-        this.timezone = timezone;
+    public void setTimeZone(Integer timeZone) {
+        this.timeZone = timeZone;
     }
 
 }
