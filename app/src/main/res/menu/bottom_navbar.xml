@@ -9,6 +9,10 @@
         android:title="Chat"
         android:icon="@drawable/ic_baseline_chat_24" />
 
+    <item android:id="@+id/globalChat"
+        android:title="Chat"
+        android:icon="@drawable/ic_baseline_chat_24" />
+
     <item android:id="@+id/event"
         android:title="Event"
         android:icon="@drawable/ic_baseline_event_note_24" />
