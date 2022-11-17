@@ -3,6 +3,7 @@ package com.example.portpals;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -10,6 +11,7 @@ import com.example.portpals.fragments.ChatFragment;
 import com.example.portpals.fragments.EventFragment;
 import com.example.portpals.fragments.HomeFragment;
 import com.example.portpals.fragments.ProfileFragment;
+import com.example.portpals.util.FlightInfoManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     public static final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     public static final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     public static final DatabaseReference databaseReference = firebaseDatabase.getReference();
+    public static Context context;
 
     private BottomNavigationView bottomNavBar;
     private Map<Integer, Fragment> fragmentMap;
@@ -40,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        MainActivity.context = getApplicationContext();
+        FlightInfoManager.getInstance(this);
 
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         if (currentUser != null) {
@@ -62,4 +68,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public static Context getContext(){
+        return context;
+    }
 }
