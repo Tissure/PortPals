@@ -15,7 +15,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.portpals.R;
-import com.example.portpals.Chat;
+//import com.example.portpals.Chat;
 import com.example.portpals.recycleradapters.ChatRecyclerAdapter;
 import com.example.portpals.models.ChatRoomInfo;
 import com.example.portpals.util.ClickListener;
@@ -49,18 +49,18 @@ public class ChatFragment extends Fragment implements ClickListener {
         recyclerView.setAdapter(adapter);
     }
 
-    private void setBtn() {
-        Button joinBtn = getActivity().findViewById(R.id.joinChatBtn);
-
-        joinBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getContext(), "blehh", Toast.LENGTH_LONG);
-                Intent intent = new Intent(getContext(), Chat.class);
-                getActivity().startActivity(intent);
-            }
-        });
-    }
+//    private void setBtn() {
+//        Button joinBtn = getActivity().findViewById(R.id.joinChatBtn);
+//
+//        joinBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Toast.makeText(getContext(), "blehh", Toast.LENGTH_LONG);
+//                Intent intent = new Intent(getContext(), Chat.class);
+//                getActivity().startActivity(intent);
+//            }
+//        });
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -95,11 +95,11 @@ public class ChatFragment extends Fragment implements ClickListener {
 
     @Override
     public void onClick(View view, int position) {
-        ChatRoomFragment chatRoomClickedOn = new ChatRoomFragment();
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("chatRoomInfo", chatRoomInfoList.get(position));
-        chatRoomClickedOn.setArguments(bundle);
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, chatRoomClickedOn).commit();
+//        ChatRoomFragment chatRoomClickedOn = new ChatRoomFragment();
+//        Bundle bundle = new Bundle();
+//        bundle.putParcelable("chatRoomInfo", chatRoomInfoList.get(position));
+//        chatRoomClickedOn.setArguments(bundle);
+//        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, chatRoomClickedOn).commit();
     }
 
 }

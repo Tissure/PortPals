@@ -6,13 +6,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.portpals.MemoryData;
-import com.example.portpals.R;
 import com.example.portpals.chat.ChatAdapter;
 import com.example.portpals.chat.ChatList;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,11 +36,9 @@ public class Chat extends AppCompatActivity {
 
     private final List<ChatList> chatLists = new ArrayList<>();
     private String chatKey;
-    String getUserMobile = "";
     private RecyclerView chattingRecyclerView;
     private ChatAdapter chatAdapter;
     private boolean loadingFirstTime = true;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,21 +48,20 @@ public class Chat extends AppCompatActivity {
         final ImageView backBtn = findViewById(R.id.backBtn);
         final TextView nameTV = findViewById(R.id.name);
         final EditText messageEditText = findViewById(R.id.messageEditTxt);
-        final ImageView profilePic  = findViewById(R.id.profilePic);
         final ImageView sendBtn = findViewById(R.id.sendBtn);
+
+
 
         chattingRecyclerView = findViewById(R.id.chattingRecyclerView);
 
         // get data from messages adapter class
-        final String getName = getIntent().getStringExtra("name");
-        final String getProfilePic  = getIntent().getStringExtra("profile_pic");
+       // final String getName = getIntent().getStringExtra("name");
+
         chatKey = getIntent().getStringExtra("chat_key");
-        final String getMobile = getIntent().getStringExtra("mobile");
-        final String UID = String.valueOf(firebaseAuth.getCurrentUser());
 
+        final String UID = firebaseAuth.getCurrentUser().getUid();
 
-        nameTV.setText(getName);
-        //Picasso.get().load(getProfilePic).into(profilePic)
+        nameTV.setText("AIRPORT CHAT");
 
         chattingRecyclerView.setHasFixedSize(true);
         chattingRecyclerView.setLayoutManager(new LinearLayoutManager(Chat.this));
@@ -86,37 +82,28 @@ public class Chat extends AppCompatActivity {
                                 final String messageTimeStamps = messagesSnapshot.getKey();
 
                                 final String getMsg = messagesSnapshot.child("msg").getValue(String.class);
+                                final String getUID = messagesSnapshot.child("UID").getValue(String.class);
+                                final String getDisplayName = snapshot.child("Users").child(UID).child("displayName").getValue(String.class);
 
                                 Timestamp timestamp = new Timestamp(Long.parseLong(messageTimeStamps));
                                 Date date = new Date(timestamp.getTime());
                                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
                                 SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
 
-                                ChatList chatList = new ChatList(UID,getMsg, simpleDateFormat.format(date), simpleTimeFormat.format(date));
+                                ChatList chatList = new ChatList(getUID, getDisplayName,getMsg, simpleDateFormat.format(date), simpleTimeFormat.format(date));
                                 chatLists.add(chatList);
-
-                                if(loadingFirstTime || Long.parseLong(messageTimeStamps) > Long.parseLong(MemoryData.getLastMsgTS(Chat.this, chatKey))) {
-
-                                    loadingFirstTime = false;
-
-                                    MemoryData.saveLastMsgTS(messageTimeStamps,chatKey,Chat.this);
-                                    chatAdapter.updateChatList(chatLists);
-
-
-                                    chattingRecyclerView.scrollToPosition(chatLists.size()-1);
-                                }
-
                             }
                         }
                     }
                 }
 
-
+                chatAdapter.updateChatList(chatLists);
+                chattingRecyclerView.scrollToPosition(chatLists.size()-1);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Log.d("Crashed while reading chat", error.getMessage());
             }
         });
 
@@ -125,9 +112,8 @@ public class Chat extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 final String getTxtMessage = messageEditText.getText().toString();
-
-
                 final String currentTimestamp = String.valueOf(System.currentTimeMillis()).substring(0, 10);
+
 
                 databaseReference.child("chat").child("global").child("messages").child(currentTimestamp).child("msg").setValue(getTxtMessage);
                 databaseReference.child("chat").child("global").child("messages").child(currentTimestamp).child("UID").setValue(UID);

@@ -17,6 +17,13 @@
             android:layout_marginEnd="50dp">
 
             <TextView
+                android:id="@+id/opoUname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="User Name"
+                android:textColor="@color/black"/>
+
+            <TextView
                 android:id="@+id/opoMessage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -44,6 +51,13 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
             android:layout_marginEnd="20dp">
+
+            <TextView
+                android:id="@+id/myUname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="User Name"
+                android:textColor="@color/black"/>
 
             <TextView
                 android:id="@+id/myMessage"

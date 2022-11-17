@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.portpals.MainActivity;
-import com.example.portpals.MemoryData;
 import com.example.portpals.R;
 
 import java.lang.reflect.Member;
@@ -38,17 +37,17 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
     public void onBindViewHolder(@NonNull ChatAdapter.MyViewHolder holder, int position) {
 
         ChatList list2 = chatLists.get(position);
-        if(list2.getUID().equals(String.valueOf(MainActivity.firebaseAuth.getCurrentUser()))) {
+        if(list2.getUID().equals(MainActivity.firebaseAuth.getCurrentUser().getUid())) {
             holder.myLayout.setVisibility(View.VISIBLE);
             holder.opoLayout.setVisibility(View.GONE);
-
+            holder.myUname.setText(list2.getDisplayName());
             holder.myMessage.setText(list2.getMessage());
             holder.myTime.setText(list2.getDate()+ " " + list2.getTime());
 
         } else {
             holder.myLayout.setVisibility(View.GONE);
             holder.opoLayout.setVisibility(View.VISIBLE);
-
+            holder.opoUname.setText(list2.getDisplayName());
             holder.opoMessage.setText(list2.getMessage());
             holder.opoTime.setText(list2.getDate()+ " " + list2.getTime());
         }
@@ -61,18 +60,19 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
 
     public void updateChatList(List<ChatList> chatLists) {
         this.chatLists = chatLists;
-
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
 
         private LinearLayout opoLayout, myLayout;
-        private TextView opoMessage, myMessage;
+        private TextView opoMessage, myMessage, opoUname, myUname;
         private TextView opoTime, myTime;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            opoUname = itemView.findViewById(R.id.opoUname);
+            myUname = itemView.findViewById(R.id.myUname);
             opoLayout = itemView.findViewById(R.id.opoLayout);
             myLayout = itemView.findViewById(R.id.myLayout);
             opoMessage = itemView.findViewById(R.id.opoMessage);

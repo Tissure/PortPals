@@ -2,13 +2,18 @@ package com.example.portpals.chat;
 
 public class ChatList {
 
-    private String UID, message, date, time;
+    private String UID, displayName, message, date, time;
 
-    public ChatList(String UID, String message, String date, String time) {
+    public ChatList(String UID, String displayName, String message, String date, String time) {
+        this.displayName = displayName;
         this.UID = UID;
         this.message = message;
         this.date = date;
         this.time = time;
+    }
+
+    public String getDisplayName() {
+        return displayName;
     }
 
     public String getUID() {
