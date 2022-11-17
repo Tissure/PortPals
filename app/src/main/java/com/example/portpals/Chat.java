@@ -38,7 +38,7 @@ public class Chat extends AppCompatActivity {
     private String chatKey;
     private RecyclerView chattingRecyclerView;
     private ChatAdapter chatAdapter;
-    private boolean loadingFirstTime = true;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,12 +92,11 @@ public class Chat extends AppCompatActivity {
 
                                 ChatList chatList = new ChatList(getUID, getDisplayName,getMsg, simpleDateFormat.format(date), simpleTimeFormat.format(date));
                                 chatLists.add(chatList);
+                                chatAdapter.updateChatList(chatLists);
                             }
                         }
                     }
                 }
-
-                chatAdapter.updateChatList(chatLists);
                 chattingRecyclerView.scrollToPosition(chatLists.size()-1);
             }
 
@@ -118,6 +117,7 @@ public class Chat extends AppCompatActivity {
                 databaseReference.child("chat").child("global").child("messages").child(currentTimestamp).child("msg").setValue(getTxtMessage);
                 databaseReference.child("chat").child("global").child("messages").child(currentTimestamp).child("UID").setValue(UID);
 
+                chattingRecyclerView.scrollToPosition(chatLists.size()-1);
                 // clear edit Text
                 messageEditText.setText("");
             }
