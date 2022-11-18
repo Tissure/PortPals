@@ -49,18 +49,7 @@ public class ChatFragment extends Fragment implements ClickListener {
         recyclerView.setAdapter(adapter);
     }
 
-//    private void setBtn() {
-//        Button joinBtn = getActivity().findViewById(R.id.joinChatBtn);
-//
-//        joinBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Toast.makeText(getContext(), "blehh", Toast.LENGTH_LONG);
-//                Intent intent = new Intent(getContext(), Chat.class);
-//                getActivity().startActivity(intent);
-//            }
-//        });
-//    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,35 +60,24 @@ public class ChatFragment extends Fragment implements ClickListener {
         setChatRoomInfo();
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chatrooms, container, false);
-
-
         return view;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-
         // fill the recycler view
         recyclerView = getActivity().findViewById(R.id.chatRecyclerView);
-
-
-
-
         setChatRoomAdapter();
-
-
-
-
     }
 
     @Override
     public void onClick(View view, int position) {
-//        ChatRoomFragment chatRoomClickedOn = new ChatRoomFragment();
-//        Bundle bundle = new Bundle();
-//        bundle.putParcelable("chatRoomInfo", chatRoomInfoList.get(position));
-//        chatRoomClickedOn.setArguments(bundle);
-//        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, chatRoomClickedOn).commit();
+        ChatRoomFragment chatRoomClickedOn = new ChatRoomFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("chatRoomInfo", chatRoomInfoList.get(position));
+        chatRoomClickedOn.setArguments(bundle);
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, chatRoomClickedOn).commit();
     }
 
 }
