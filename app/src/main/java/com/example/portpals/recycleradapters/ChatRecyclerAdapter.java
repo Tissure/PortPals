@@ -1,5 +1,6 @@
 package com.example.portpals.recycleradapters;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.portpals.R;
 import com.example.portpals.models.ChatRoomInfo;
 import com.example.portpals.util.ClickListener;
+
+import com.example.portpals.fragments.ChatFragment;
 
 import java.util.ArrayList;
 
@@ -47,6 +50,7 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
         holder.participants.setText(participants);
         holder.roomTime.setText(roomTime + " minutes");
         holder.terminalNum.setText("Terminal " + terminalNum);
+
     }
 
     @Override

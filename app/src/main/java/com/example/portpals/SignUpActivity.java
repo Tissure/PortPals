@@ -65,6 +65,9 @@ public class SignUpActivity extends AppCompatActivity {
     private void authenticateUser() {
         String email = emailTextView.getText().toString();
         String password = passwordTextView.getText().toString();
+        String displayName = displayNameTextView.getText().toString();
+        String firstName = firstNameTextView.getText().toString();
+        String lastName = lastNameTextView.getText().toString();
 
         // create a firebase user
         MainActivity.firebaseAuth.createUserWithEmailAndPassword(email, password)
@@ -75,7 +78,7 @@ public class SignUpActivity extends AppCompatActivity {
                     String key = firebaseUser.getUid();
 
                     // attempt to put the new user in the database
-                    User newUser = createNewUser(firebaseUser);
+                    User newUser = new User(email, displayName, firstName, lastName);
                     Task putUserInDB = MainActivity.databaseReference.child("Users").child(key).setValue(newUser);
                     if (!putUserInDB.isSuccessful()) {
                         String errMsg = putUserInDB.getException().getMessage();
@@ -85,6 +88,7 @@ public class SignUpActivity extends AppCompatActivity {
                     }
 
                     Intent intent = new Intent(this, MainActivity.class);
+                    intent.putExtra("key", key);
                     startActivity(intent);
                 } else {
                     Toast.makeText(this, "Failed to create user!", Toast.LENGTH_LONG).show();

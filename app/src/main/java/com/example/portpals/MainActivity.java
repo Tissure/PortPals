@@ -2,13 +2,17 @@ package com.example.portpals;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.portpals.chat.ChatAdapter;
+import com.example.portpals.chat.ChatList;
 import com.example.portpals.fragments.ChatFragment;
 import com.example.portpals.fragments.EventFragment;
+import com.example.portpals.fragments.GlobalChat;
 import com.example.portpals.fragments.HomeFragment;
 import com.example.portpals.fragments.ProfileFragment;
 import com.example.portpals.util.FlightInfoManager;
@@ -18,7 +22,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -35,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentMap = new HashMap<>();
         fragmentMap.put(R.id.home, new HomeFragment());
         fragmentMap.put(R.id.chat, new ChatFragment());
+        fragmentMap.put(R.id.globalChat, new GlobalChat());
         fragmentMap.put(R.id.event, new EventFragment());
         fragmentMap.put(R.id.profile, new ProfileFragment());
     }
@@ -54,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, fragmentMap.get(R.id.home)).commit();
 
             bottomNavBar.setOnItemSelectedListener(item -> {
-                Fragment f = fragmentMap.get(item.getItemId());
+                    Fragment f = fragmentMap.get(item.getItemId());
                 if (f == null) {
                     return false;
                 }
@@ -71,4 +78,5 @@ public class MainActivity extends AppCompatActivity {
     public static Context getContext(){
         return context;
     }
+
 }

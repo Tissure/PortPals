@@ -10,4 +10,7 @@
     <color name="chat_gray">#ADADAD</color>
 
     <color name="button_color">#2288FF</color>
+    <color name="chat_color">#1E34EF</color>
+    <color name="chat_color_2">#801E34EF</color>
+    <color name="bg_color">#0D1E32DC</color>
 </resources>

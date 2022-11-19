@@ -1,5 +1,6 @@
 package com.example.portpals.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,8 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.portpals.R;
+//import com.example.portpals.Chat;
 import com.example.portpals.recycleradapters.ChatRecyclerAdapter;
 import com.example.portpals.models.ChatRoomInfo;
 import com.example.portpals.util.ClickListener;
@@ -45,6 +49,8 @@ public class ChatFragment extends Fragment implements ClickListener {
         recyclerView.setAdapter(adapter);
     }
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -52,15 +58,14 @@ public class ChatFragment extends Fragment implements ClickListener {
         // initialize the chat room info with default values for the time being
         chatRoomInfoList = new ArrayList<>();
         setChatRoomInfo();
-
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_chatrooms, container, false);
+        View view = inflater.inflate(R.layout.fragment_chatrooms, container, false);
+        return view;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-
         // fill the recycler view
         recyclerView = getActivity().findViewById(R.id.chatRecyclerView);
         setChatRoomAdapter();
