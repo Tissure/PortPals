@@ -27,13 +27,6 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    private boolean dataSet = false;
-
-
-    private RecyclerView chattingRecyclerView;
-    private ChatAdapter chatAdapter;
-    private boolean loadingFirstTime = true;
-
     public static final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     public static final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     public static final DatabaseReference databaseReference = firebaseDatabase.getReference();
