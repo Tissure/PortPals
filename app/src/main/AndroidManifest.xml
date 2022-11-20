@@ -3,14 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.portpals" >
 
-<<<<<<< HEAD
+
 
     <uses-permission android:name="android.permission.INTERNET" />
 
-=======
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
->>>>>>> origin/event_creation
+
     <application
         android:usesCleartextTraffic="true"
         android:allowBackup="true"

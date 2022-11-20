@@ -48,9 +48,9 @@ Tournament best out of 3! JOIN NOW!</string>
     <string name="default_time">60 minutes</string>
     <string name="terminal">Terminal ###</string>
     <string name="participants">5/12</string>
-<<<<<<< HEAD
+
     <string name="already_have_an_account_click_here_to_sign_in">Already have an account? Click here to sign in</string>
-=======
+
     <string name="nextBtn">Next</string>
     <string name="eventTitle">Title</string>
     <string name="selectTime">Select Time Length:</string>
@@ -76,7 +76,7 @@ Tournament best out of 3! JOIN NOW!</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="lat">Latitude:</string>
     <string name="lng">Longitude</string>
->>>>>>> origin/event_creation
+
 
 
     <string name="flight_scheduled">Scheduled</string>
