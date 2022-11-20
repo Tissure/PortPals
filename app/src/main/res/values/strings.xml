@@ -48,7 +48,35 @@ Tournament best out of 3! JOIN NOW!</string>
     <string name="default_time">60 minutes</string>
     <string name="terminal">Terminal ###</string>
     <string name="participants">5/12</string>
+<<<<<<< HEAD
     <string name="already_have_an_account_click_here_to_sign_in">Already have an account? Click here to sign in</string>
+=======
+    <string name="nextBtn">Next</string>
+    <string name="eventTitle">Title</string>
+    <string name="selectTime">Select Time Length:</string>
+    <string name="step3">Select your event\'s tags:</string>
+    <string name="reason1">Gaming</string>
+    <string name="reason2">Drinks</string>
+    <string name="reason3">Networking</string>
+    <string name="reason4">Sports</string>
+    <string name="reason5">Music</string>
+    <string name="summary">Summary</string>
+    <string name="eventTime">Duration</string>
+    <string name="eventDesc">Description</string>
+    <string name="eventTags">Tags</string>
+
+    <string-array name="timeLimits">
+        <item>30 minutes</item>
+        <item>45 minutes</item>
+        <item>1 hour</item>
+        <item>1.5 hours</item>
+        <item>2 hours</item>
+        <item>2.5 hours</item>
+    </string-array>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="lat">Latitude:</string>
+    <string name="lng">Longitude</string>
+>>>>>>> origin/event_creation
 
 
     <string name="flight_scheduled">Scheduled</string>
