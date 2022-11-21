@@ -10,6 +10,10 @@ import java.util.List;
 
 public class Event implements Parcelable {
 
+    @SerializedName("host")
+    @Expose
+    private String host;
+
     @SerializedName("name")
     @Expose
     private String name;
@@ -71,6 +75,14 @@ public class Event implements Parcelable {
             return new Event[size];
         }
     };
+
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
 
     public String getName() {
         return name;

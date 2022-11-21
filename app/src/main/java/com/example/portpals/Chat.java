@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.portpals.chat.ChatAdapter;
 import com.example.portpals.chat.ChatList;
+import com.example.portpals.util.AirportsInfoManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,17 +39,18 @@ public class Chat extends AppCompatActivity {
     private String chatKey;
     private RecyclerView chattingRecyclerView;
     private ChatAdapter chatAdapter;
-
+    private AirportsInfoManager am = AirportsInfoManager.getInstance();
+    private final String iata = am.getDeparture().getValue().getIata();
+//    private String iata = "AAA";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
         final ImageView backBtn = findViewById(R.id.backBtn);
-        final TextView nameTV = findViewById(R.id.name);
+        final TextView chatName = findViewById(R.id.chatName);
         final EditText messageEditText = findViewById(R.id.messageEditTxt);
         final ImageView sendBtn = findViewById(R.id.sendBtn);
-
         chattingRecyclerView = findViewById(R.id.chattingRecyclerView);
 
         // get data from messages adapter class
@@ -58,7 +60,7 @@ public class Chat extends AppCompatActivity {
 
         final String UID = firebaseAuth.getCurrentUser().getUid();
 
-        nameTV.setText("AIRPORT CHAT");
+        chatName.setText( iata + " CHAT");
 
         chattingRecyclerView.setHasFixedSize(true);
         chattingRecyclerView.setLayoutManager(new LinearLayoutManager(Chat.this));
@@ -70,10 +72,10 @@ public class Chat extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                if(snapshot.hasChild("chat")) {
-                    if(snapshot.child("chat").child("global").hasChild("messages")) {
+                if(snapshot.hasChild("Airports")) {
+                    if(snapshot.child("Airports").child(iata).child("airportChat").hasChild("messages")) {
                         chatLists.clear();
-                        for(DataSnapshot messagesSnapshot : snapshot.child("chat").child("global").child("messages").getChildren()){
+                        for(DataSnapshot messagesSnapshot : snapshot.child("Airports").child(iata).child("airportChat").child("messages").getChildren()){
                             if(messagesSnapshot.hasChild("msg")) {
 
                                 final String messageTimeStamps = messagesSnapshot.getKey();
@@ -111,8 +113,8 @@ public class Chat extends AppCompatActivity {
                 final String currentTimestamp = String.valueOf(System.currentTimeMillis()).substring(0, 10);
 
 
-                databaseReference.child("chat").child("global").child("messages").child(currentTimestamp).child("msg").setValue(getTxtMessage);
-                databaseReference.child("chat").child("global").child("messages").child(currentTimestamp).child("UID").setValue(UID);
+                databaseReference.child("Airports").child(iata).child("airportChat").child("messages").child(currentTimestamp).child("msg").setValue(getTxtMessage);
+                databaseReference.child("Airports").child(iata).child("airportChat").child("messages").child(currentTimestamp).child("UID").setValue(UID);
 
                 chattingRecyclerView.scrollToPosition(chatLists.size()-1);
                 // clear edit Text

@@ -15,6 +15,7 @@ import com.example.portpals.fragments.EventFragment;
 import com.example.portpals.fragments.GlobalChat;
 import com.example.portpals.fragments.HomeFragment;
 import com.example.portpals.fragments.ProfileFragment;
+import com.example.portpals.util.AirportsInfoManager;
 import com.example.portpals.util.FlightInfoManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentMap.put(R.id.event, new EventFragment());
         fragmentMap.put(R.id.profile, new ProfileFragment());
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
