@@ -50,8 +50,6 @@ public class Chat extends AppCompatActivity {
         final EditText messageEditText = findViewById(R.id.messageEditTxt);
         final ImageView sendBtn = findViewById(R.id.sendBtn);
 
-
-
         chattingRecyclerView = findViewById(R.id.chattingRecyclerView);
 
         // get data from messages adapter class
