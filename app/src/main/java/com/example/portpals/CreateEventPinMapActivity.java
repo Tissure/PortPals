@@ -33,7 +33,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
-public class CreateEventPinMapActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener {
+public class  CreateEventPinMapActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener {
 
     SupportMapFragment mapFragment;
     Marker mCurrLocationMarker;

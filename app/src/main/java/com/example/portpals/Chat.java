@@ -67,7 +67,6 @@ public class Chat extends AppCompatActivity {
 
         // Choose which chat to display
         if(bundle.getString("chatType").equals("Events")) {
-//            Event currentEvent = bundle.getParcelable("eventInfo");
             chatType = bundle.getString("chatType");
             chatID = bundle.getString("chatID");
             chatroomName = bundle.getString("chatName")  + " Chat";
@@ -131,6 +130,8 @@ public class Chat extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                Event currentEvent = bundle.getParcelable("eventInfo");
+//                currentEvent.decOccupants();
                 finish();
             }
         });

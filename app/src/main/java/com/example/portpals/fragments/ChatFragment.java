@@ -32,6 +32,7 @@ public class ChatFragment extends Fragment implements ClickListener {
     private ArrayList<Event> eventList;
     private RecyclerView recyclerView;
 
+
     private void initEventList() {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         Query eventsQuery = databaseReference.child("Airports").child(AirportsInfoManager.getInstance().getDeparture().getValue().getIata()).child("Events");
@@ -72,9 +73,10 @@ public class ChatFragment extends Fragment implements ClickListener {
 
     @Override
     public void onClick(View view, int position) {
+        eventList.get(position).incOccupants();
         Intent intent = new Intent(this.getActivity(), Chat.class);
         Bundle bundle = new Bundle();
-//        bundle.putParcelable("eventInfo", eventList.get(position));
+//        bundle.getParcelable("key ",eventList.get(position));
 
         bundle.putString("chatType", "Events");
         bundle.putString("chatID", eventList.get(position).getId());

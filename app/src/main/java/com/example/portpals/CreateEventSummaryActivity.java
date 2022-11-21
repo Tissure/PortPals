@@ -78,6 +78,7 @@ public class CreateEventSummaryActivity extends AppCompatActivity {
         Event newEvent = new Event();
         String id = databaseReference.push().getKey();
         newEvent.setId(id);
+        newEvent.setOccupants(1);
         newEvent.setCapacity(bundle.getInt("capacity"));
         newEvent.setName(bundle.getString("title"));
         newEvent.setTags(bundle.getStringArrayList("tags"));

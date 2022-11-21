@@ -44,7 +44,7 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
         } else {
             System.out.println("User is null!");
         }
-        int capacity = eventList.get(position).getCapacity();
+        String capacity = eventList.get(position).getOccupants()+ "/" + String.valueOf(eventList.get(position).getCapacity());
         //int imgId = eventList.get(position).getProfile_picture();
         //int terminalNum = chatRoomInfoList.get(position).getTerminalNum();
         String roomTime = eventList.get(position).getUpTime();
@@ -53,7 +53,7 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
         holder.titleText.setText(titleText);
         holder.profileName.setText(userName);
         //holder.profile_picture.setImageResource(imgId);
-        holder.capacity.setText(String.valueOf(capacity));
+        holder.capacity.setText(capacity);
         holder.roomTime.setText(roomTime);
         //holder.terminalNum.setText("Terminal " + terminalNum);
         holder.description.setText(description);
