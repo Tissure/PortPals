@@ -24,13 +24,15 @@ import org.json.JSONArray;
 
 public class GlobalChat extends Fragment implements View.OnClickListener {
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_global_chat, container, false);
         //Create a path to listen for a click for each button
         rootView.findViewById(R.id.sendBtn).setOnClickListener(this);
-        String iata = AirportsInfoManager.getInstance().getDeparture().getValue().getIata();
+
         EditText flightCodeView = rootView.findViewById(R.id.flightCode);
 
         // Inflate the layout for this fragment
@@ -39,9 +41,12 @@ public class GlobalChat extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        Toast.makeText(view.getContext(), "this", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getActivity(), Chat.class);
-                startActivity(intent);
+
+        Intent intent = new Intent(getActivity(), Chat.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("chatType", "airportChat");
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }
 

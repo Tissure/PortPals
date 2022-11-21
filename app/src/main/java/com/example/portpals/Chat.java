@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.portpals.chat.ChatAdapter;
 import com.example.portpals.chat.ChatList;
+import com.example.portpals.models.Event;
 import com.example.portpals.util.AirportsInfoManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -47,6 +48,8 @@ public class Chat extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        Bundle bundle = getIntent().getExtras();
+
         final ImageView backBtn = findViewById(R.id.backBtn);
         final TextView chatName = findViewById(R.id.chatName);
         final EditText messageEditText = findViewById(R.id.messageEditTxt);
@@ -60,22 +63,35 @@ public class Chat extends AppCompatActivity {
 
         final String UID = firebaseAuth.getCurrentUser().getUid();
 
-        chatName.setText( iata + " CHAT");
-
         chattingRecyclerView.setHasFixedSize(true);
         chattingRecyclerView.setLayoutManager(new LinearLayoutManager(Chat.this));
 
         chatAdapter = new ChatAdapter(chatLists, Chat.this);
         chattingRecyclerView.setAdapter(chatAdapter);
 
+        String chatType;
+        String chatID;
+        String chatroomName;
+
+        if(bundle.getString("chatType").equals("Events")) {
+//            Event currentEvent = bundle.getParcelable("eventInfo");
+            chatType = bundle.getString("chatType");
+            chatID = bundle.getString("chatID");
+            chatroomName = bundle.getString("chatName")  + " CHAT";
+            chatName.setText(chatroomName);
+        } else {
+            chatType = "airportChat";
+            chatID = "global";
+            chatName.setText(iata);
+        }
+
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
                 if(snapshot.hasChild("Airports")) {
-                    if(snapshot.child("Airports").child(iata).child("airportChat").hasChild("messages")) {
+                    if(snapshot.child("Airports").child(iata).child(chatType).child(chatID).hasChild("messages")) {
                         chatLists.clear();
-                        for(DataSnapshot messagesSnapshot : snapshot.child("Airports").child(iata).child("airportChat").child("messages").getChildren()){
+                        for(DataSnapshot messagesSnapshot : snapshot.child("Airports").child(iata).child(chatType).child(chatID).child("messages").getChildren()){
                             if(messagesSnapshot.hasChild("msg")) {
 
                                 final String messageTimeStamps = messagesSnapshot.getKey();
@@ -94,9 +110,10 @@ public class Chat extends AppCompatActivity {
                                 chatAdapter.updateChatList(chatLists);
                             }
                         }
+                        chattingRecyclerView.scrollToPosition(chatLists.size()-1);
                     }
                 }
-                chattingRecyclerView.scrollToPosition(chatLists.size()-1);
+
             }
 
             @Override
@@ -113,8 +130,8 @@ public class Chat extends AppCompatActivity {
                 final String currentTimestamp = String.valueOf(System.currentTimeMillis()).substring(0, 10);
 
 
-                databaseReference.child("Airports").child(iata).child("airportChat").child("messages").child(currentTimestamp).child("msg").setValue(getTxtMessage);
-                databaseReference.child("Airports").child(iata).child("airportChat").child("messages").child(currentTimestamp).child("UID").setValue(UID);
+                databaseReference.child("Airports").child(iata).child(chatType).child(chatID).child("messages").child(currentTimestamp).child("msg").setValue(getTxtMessage);
+                databaseReference.child("Airports").child(iata).child(chatType).child(chatID).child("messages").child(currentTimestamp).child("UID").setValue(UID);
 
                 chattingRecyclerView.scrollToPosition(chatLists.size()-1);
                 // clear edit Text

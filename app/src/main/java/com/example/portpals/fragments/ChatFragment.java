@@ -74,8 +74,12 @@ public class ChatFragment extends Fragment implements ClickListener {
     public void onClick(View view, int position) {
         Intent intent = new Intent(this.getActivity(), Chat.class);
         Bundle bundle = new Bundle();
-        bundle.putParcelable("eventInfo", eventList.get(position));
-        intent.putExtra("bundle", bundle);
+//        bundle.putParcelable("eventInfo", eventList.get(position));
+
+        bundle.putString("chatType", "Events");
+        bundle.putString("chatID", eventList.get(position).getId());
+        bundle.putString("chatName", eventList.get(position).getName());
+        intent.putExtras(bundle);
         startActivity(intent);
 
 //        ChatRoomFragment chatRoomClickedOn = new ChatRoomFragment();
