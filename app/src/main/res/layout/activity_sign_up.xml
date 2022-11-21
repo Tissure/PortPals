@@ -109,26 +109,50 @@
     <TextView
         android:id="@+id/textViewPasswordInstruction"
         android:layout_width="365dp"
-        android:layout_height="102dp"
+        android:layout_height="wrap_content"
         android:text="@string/a_valid_password_has_at_least_8_characters_and_includes_at_lease_one_uppercase_letter_one_lowercase_letter_one_number_and_one_special_character"
         android:textSize="15sp"
 
         android:layout_gravity="center"
         android:layout_marginTop="18dp"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+
+        <Button
+            android:id="@+id/uploadProfilePictureButton"
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:text="click to upload profile picture"
+            />
+
+        <ImageView
+            android:id="@+id/profileImageView"
+            android:layout_width="200sp"
+            android:layout_height="100sp"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:scaleType="centerCrop"/>
+
+    </LinearLayout>
+
+
+
     <Button
         android:id="@+id/btnCreateAccount"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:text="@string/create_account"
-        android:textSize="25sp"
+        android:textSize="22sp"
         android:layout_gravity="center"
         android:layout_marginTop="5dp"
         android:backgroundTint="@color/button_color"/>
 
     <Button
         android:id="@+id/signInButton"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="15dp"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:textSize="12sp"
