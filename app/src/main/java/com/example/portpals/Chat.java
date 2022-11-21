@@ -113,7 +113,6 @@ public class Chat extends AppCompatActivity {
                         chattingRecyclerView.scrollToPosition(chatLists.size()-1);
                     }
                 }
-
             }
 
             @Override
