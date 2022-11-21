@@ -11,55 +11,51 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
 
+import com.example.portpals.Chat;
 import com.example.portpals.R;
-//import com.example.portpals.Chat;
+import com.example.portpals.models.Event;
 import com.example.portpals.recycleradapters.ChatRecyclerAdapter;
-import com.example.portpals.models.ChatRoomInfo;
+import com.example.portpals.util.AirportsInfoManager;
 import com.example.portpals.util.ClickListener;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
 public class ChatFragment extends Fragment implements ClickListener {
 
     private final int[] profilePics = {R.drawable.chad, R.drawable.crazy, R.drawable.vibe};
-    private ArrayList<ChatRoomInfo> chatRoomInfoList;
-
+    private ArrayList<Event> eventList;
     private RecyclerView recyclerView;
 
-    private void setChatRoomInfo() {
-
-        chatRoomInfoList.add(new ChatRoomInfo("PogRoom","Pog-man", "2/4", 60, 12, profilePics[0]));
-        chatRoomInfoList.add(new ChatRoomInfo("Toxic","Pog-man", "3/4", 45, 16, profilePics[1]));
-        chatRoomInfoList.add(new ChatRoomInfo("War Room","Pog-man", "4/4", 20, 17, profilePics[2]));
-
-        chatRoomInfoList.add(new ChatRoomInfo("Legends only","Legend", "2/4", 12, 12, profilePics[0]));
-        chatRoomInfoList.add(new ChatRoomInfo("Living like a chad","Chad", "3/4", 120, 16, profilePics[1]));
-        chatRoomInfoList.add(new ChatRoomInfo("How to be cool","GigaChad", "4/4", 15, 17, profilePics[2]));
+    private void initEventList() {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        Query eventsQuery = databaseReference.child("Airports").child(AirportsInfoManager.getInstance().getDeparture().getValue().getIata()).child("Events");
+        eventsQuery.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (DataSnapshot child : task.getResult().getChildren()) {
+                    Gson gson = new Gson();
+                    Event currentEvent = gson.fromJson(gson.toJson(child.getValue()), Event.class);
+                    eventList.add(currentEvent);
+                }
+                ChatRecyclerAdapter adapter = new ChatRecyclerAdapter(eventList);
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+                adapter.setClickListener(this);
+                layoutManager.canScrollVertically();
+                recyclerView.setLayoutManager(layoutManager);
+                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                recyclerView.setAdapter(adapter);
+            }
+        });
     }
-
-    private void setChatRoomAdapter() {
-        ChatRecyclerAdapter adapter = new ChatRecyclerAdapter(chatRoomInfoList);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        adapter.setClickListener(this);
-        layoutManager.canScrollVertically();
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
-    }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        // initialize the chat room info with default values for the time being
-        chatRoomInfoList = new ArrayList<>();
-        setChatRoomInfo();
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chatrooms, container, false);
         return view;
@@ -69,17 +65,24 @@ public class ChatFragment extends Fragment implements ClickListener {
     public void onStart() {
         super.onStart();
         // fill the recycler view
+        eventList = new ArrayList<>();
+        initEventList();
         recyclerView = getActivity().findViewById(R.id.chatRecyclerView);
-        setChatRoomAdapter();
     }
 
     @Override
     public void onClick(View view, int position) {
-        ChatRoomFragment chatRoomClickedOn = new ChatRoomFragment();
+        Intent intent = new Intent(this.getActivity(), Chat.class);
         Bundle bundle = new Bundle();
-        bundle.putParcelable("chatRoomInfo", chatRoomInfoList.get(position));
-        chatRoomClickedOn.setArguments(bundle);
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, chatRoomClickedOn).commit();
+        bundle.putParcelable("eventInfo", eventList.get(position));
+        intent.putExtra("bundle", bundle);
+        startActivity(intent);
+
+//        ChatRoomFragment chatRoomClickedOn = new ChatRoomFragment();
+//        Bundle bundle = new Bundle();
+//        bundle.putParcelable("eventInfo", eventList.get(position));
+//        chatRoomClickedOn.setArguments(bundle);
+//        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, chatRoomClickedOn).commit();
     }
 
 }

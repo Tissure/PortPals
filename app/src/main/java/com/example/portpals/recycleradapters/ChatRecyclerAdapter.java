@@ -1,6 +1,5 @@
 package com.example.portpals.recycleradapters;
 
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,20 +10,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.portpals.R;
-import com.example.portpals.models.ChatRoomInfo;
+import com.example.portpals.models.Event;
+import com.example.portpals.models.User;
 import com.example.portpals.util.ClickListener;
-
-import com.example.portpals.fragments.ChatFragment;
 
 import java.util.ArrayList;
 
 public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapter.MyViewHolder> {
 
-    private ArrayList<ChatRoomInfo> chatRoomInfoList;
+    private ArrayList<Event> eventList;
     private ClickListener listener;
 
-    public ChatRecyclerAdapter(ArrayList<ChatRoomInfo> chatRoomInfoList) {
-        this.chatRoomInfoList = chatRoomInfoList;
+    public ChatRecyclerAdapter(ArrayList<Event> eventList) {
+        this.eventList = eventList;
         this.listener = null;
     }
 
@@ -37,25 +35,33 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ChatRecyclerAdapter.MyViewHolder holder, int position) {
-        String titleText = chatRoomInfoList.get(position).getTitle();
-        String userName = chatRoomInfoList.get(position).getUsername();
-        String participants = chatRoomInfoList.get(position).getParticipants();
-        int imgId = chatRoomInfoList.get(position).getProfile_picture();
-        int terminalNum = chatRoomInfoList.get(position).getTerminalNum();
-        int roomTime = chatRoomInfoList.get(position).getRoomTime();
+        String titleText = eventList.get(position).getName();
+        User user = eventList.get(position).getUser();
+        String userName = "Guest";
+        if (user != null) {
+            userName = user.getDisplayName();
+            System.out.println(user);
+        } else {
+            System.out.println("User is null!");
+        }
+        int capacity = eventList.get(position).getCapacity();
+        //int imgId = eventList.get(position).getProfile_picture();
+        //int terminalNum = chatRoomInfoList.get(position).getTerminalNum();
+        String roomTime = eventList.get(position).getUpTime();
+        String description = eventList.get(position).getDescription();
 
         holder.titleText.setText(titleText);
         holder.profileName.setText(userName);
-        holder.profile_picture.setImageResource(imgId);
-        holder.participants.setText(participants);
-        holder.roomTime.setText(roomTime + " minutes");
-        holder.terminalNum.setText("Terminal " + terminalNum);
-
+        //holder.profile_picture.setImageResource(imgId);
+        holder.capacity.setText(String.valueOf(capacity));
+        holder.roomTime.setText(roomTime);
+        //holder.terminalNum.setText("Terminal " + terminalNum);
+        holder.description.setText(description);
     }
 
     @Override
     public int getItemCount() {
-        return chatRoomInfoList.size();
+        return eventList.size();
     }
 
     public void setClickListener(ClickListener listener) {
@@ -66,9 +72,10 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
 
         private TextView titleText;
         private TextView profileName;
-        private TextView participants;
+        private TextView capacity;
         private TextView roomTime;
         private TextView terminalNum;
+        private TextView description;
 
         private ImageView profile_picture;
 
@@ -79,7 +86,8 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
             profile_picture = itemView.findViewById(R.id.profile_picture);
             terminalNum = itemView.findViewById(R.id.terminal);
             roomTime = itemView.findViewById(R.id.roomTime);
-            participants = itemView.findViewById(R.id.participants);
+            capacity = itemView.findViewById(R.id.participants);
+            description = itemView.findViewById(R.id.eventDescription);
             itemView.setOnClickListener(this);
         }
 

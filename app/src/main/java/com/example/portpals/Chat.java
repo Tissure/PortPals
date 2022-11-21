@@ -39,7 +39,6 @@ public class Chat extends AppCompatActivity {
     private RecyclerView chattingRecyclerView;
     private ChatAdapter chatAdapter;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,4 +128,5 @@ public class Chat extends AppCompatActivity {
         });
 
     }
+
 }

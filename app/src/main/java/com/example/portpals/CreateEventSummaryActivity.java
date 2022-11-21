@@ -5,28 +5,21 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.portpals.models.Airport;
 import com.example.portpals.models.Event;
+import com.example.portpals.models.User;
 import com.example.portpals.util.AirportsInfoManager;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 public class CreateEventSummaryActivity extends AppCompatActivity {
 
@@ -70,19 +63,13 @@ public class CreateEventSummaryActivity extends AppCompatActivity {
     }
 
     public void createEventPart5(View v) {
-        //TODO: Connect location data to event
-        addEvent();
-        //TODO: Connect chat to event
-
-
-
-        //TODO: take the data from the bundle using strings and add to firebase structure
+        uploadEvent();
 
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
-    private void addEvent() {
+    private void uploadEvent() {
         Bundle bundle = getIntent().getExtras();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         String iata = AirportsInfoManager.getInstance().getDeparture().getValue().getIata();
@@ -97,7 +84,24 @@ public class CreateEventSummaryActivity extends AppCompatActivity {
         newEvent.setUpTime(bundle.getString("time"));
         newEvent.setLatitude(bundle.getString("lng"));
         newEvent.setLongitude(bundle.getString("lat"));
-        databaseReference.child("Airports").child(iata).child("Events").child(id).setValue(newEvent);
+        newEvent.setDescription(bundle.getString("desc"));
+
+        // obtain the current logged in user's data and shove it in the event
+        Query creatorUserQuery = databaseReference.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        Gson gson = new Gson();
+        creatorUserQuery.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                User creatorUser = gson.fromJson(gson.toJson(task.getResult().getValue()), User.class);
+                if (creatorUser == null) {
+                    System.out.println("No user signed in!");
+                } else {
+                    newEvent.setUser(creatorUser);
+                }
+
+                // upload the event to the firebase database
+                databaseReference.child("Airports").child(iata).child("Events").child(id).setValue(newEvent);
+            }
+        });
     }
 
 }

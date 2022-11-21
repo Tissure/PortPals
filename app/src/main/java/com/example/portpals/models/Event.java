@@ -1,11 +1,14 @@
 package com.example.portpals.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class Event {
+public class Event implements Parcelable {
 
     @SerializedName("name")
     @Expose
@@ -34,6 +37,40 @@ public class Event {
     @SerializedName("latitude")
     @Expose
     private String latitude;
+
+    @SerializedName("description")
+    @Expose
+    private String description;
+
+    @SerializedName("user")
+    @Expose
+    private User user;
+
+    protected Event(Parcel in) {
+        name = in.readString();
+        id = in.readString();
+        upTime = in.readString();
+        capacity = in.readInt();
+        tags = in.createStringArrayList();
+        longitude = in.readString();
+        latitude = in.readString();
+        description = in.readString();
+        user = in.readParcelable(ClassLoader.getSystemClassLoader());
+    }
+
+    public Event() {}
+
+    public static final Creator<Event> CREATOR = new Creator<Event>() {
+        @Override
+        public Event createFromParcel(Parcel in) {
+            return new Event(in);
+        }
+
+        @Override
+        public Event[] newArray(int size) {
+            return new Event[size];
+        }
+    };
 
     public String getName() {
         return name;
@@ -89,6 +126,40 @@ public class Event {
 
     public void setLatitude(String latitude) {
         this.latitude = latitude;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(name);
+        parcel.writeString(longitude);
+        parcel.writeString(latitude);
+        parcel.writeString(id);
+        parcel.writeString(upTime);
+        parcel.writeInt(capacity);
+        parcel.writeList(tags);
+        parcel.writeString(description);
+        parcel.writeParcelable(user, i);
     }
 
 }

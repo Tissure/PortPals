@@ -1,5 +1,6 @@
 package com.example.portpals.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,8 @@ import com.example.portpals.R;
 import com.example.portpals.chat.ChatAdapter;
 import com.example.portpals.chat.ChatList;
 import com.example.portpals.models.ChatRoomInfo;
+import com.example.portpals.models.Event;
+import com.example.portpals.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -38,14 +41,14 @@ public class ChatRoomFragment extends Fragment {
     private boolean loadingFirstTime = true;
 
 
-    private ChatRoomInfo info;
+    private Event info;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             System.out.println("GETTING ARGUMENTS");
-            info = (ChatRoomInfo) getArguments().getParcelable("chatRoomInfo");
+            info = (Event) getArguments().getParcelable("eventInfo");
         }
     }
 
@@ -69,10 +72,16 @@ public class ChatRoomFragment extends Fragment {
 
     @Override
     public void onStart() {
-
-        // set the text views information to the information about the chat
         super.onStart();
 
+        // set the text views information to the information about the chat
+        TextView nameTextView = getView().findViewById(R.id.name);
+        User user = info.getUser();
+        if (user != null) {
+            nameTextView.setText(user.getDisplayName());
+        } else {
+            nameTextView.setText("Guest");
+        }
     }
 
 
