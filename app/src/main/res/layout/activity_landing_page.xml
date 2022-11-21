@@ -19,20 +19,6 @@
         android:layout_marginTop="65dp"
         />
 
-    <EditText
-        android:id="@+id/inputFlightNum"
-        android:layout_width="203dp"
-        android:layout_height="48dp"
-        android:ems="10"
-        android:hint="@string/flightNum"
-        android:layout_gravity="center"
-        android:importantForAutofill="no"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        android:textColorHint="#757575"
-        />
-
-
     <Button
         android:id="@+id/btnLoginSignUp"
         android:layout_width="169dp"

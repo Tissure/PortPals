@@ -19,6 +19,7 @@ import com.example.portpals.R;
 import com.example.portpals.recycleradapters.ChatRecyclerAdapter;
 import com.example.portpals.models.ChatRoomInfo;
 import com.example.portpals.util.ClickListener;
+import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
 
@@ -30,6 +31,7 @@ public class ChatFragment extends Fragment implements ClickListener {
     private RecyclerView recyclerView;
 
     private void setChatRoomInfo() {
+
         chatRoomInfoList.add(new ChatRoomInfo("PogRoom","Pog-man", "2/4", 60, 12, profilePics[0]));
         chatRoomInfoList.add(new ChatRoomInfo("Toxic","Pog-man", "3/4", 45, 16, profilePics[1]));
         chatRoomInfoList.add(new ChatRoomInfo("War Room","Pog-man", "4/4", 20, 17, profilePics[2]));

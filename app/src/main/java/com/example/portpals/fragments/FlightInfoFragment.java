@@ -13,7 +13,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.portpals.R;
 import com.example.portpals.models.Airport;
@@ -63,21 +66,31 @@ public class FlightInfoFragment extends Fragment {
        } catch (JSONException e) {
             e.printStackTrace();
         }
-        //TODO RENABLE
-//        String flightNo = "AC793";
-//        FlightInfoManager fm = FlightInfoManager.getInstance();
-//
-//        fm.getFlight(flightNo).observe(getActivity(), flightInfo -> {
-//            AirportsInfoManager.getInstance(flightInfo.getDeparture().getIata(), flightInfo.getArrival().getIata());
-//            populateFlightInfo(view, flightInfo);
-//            AirportsInfoManager.getInstance().getDeparture(flightInfo.getDeparture().getIata()).observe(getActivity(), departure -> {
-//                popAirport(view, departure, R.string.popDeparture);
-//            });
-//            AirportsInfoManager.getInstance().getArrival(flightInfo.getArrival().getIata()).observe(getActivity(), arrival -> {
-//                popAirport(view, arrival, R.string.popArrival);
-//            });
-//        });
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Button flightNumberButton = getView().findViewById(R.id.flightNumberButton);
+        flightNumberButton.setOnClickListener(view -> {
+            EditText flightNumberText = getView().findViewById(R.id.flightNumberText);
+            String flightNumber = flightNumberText.getText().toString().trim();
+
+            //String flightNo = "AC793";
+            // Set the updated flight info based on the flight number entered by the user
+            FlightInfoManager fm = FlightInfoManager.getInstance();
+            fm.getFlight(flightNumber).observe(getActivity(), flightInfo -> {
+                AirportsInfoManager.getInstance(flightInfo.getDeparture().getIata(), flightInfo.getArrival().getIata());
+                populateFlightInfo(view, flightInfo);
+                AirportsInfoManager.getInstance().getDeparture(flightInfo.getDeparture().getIata()).observe(getActivity(), departure -> {
+                    popAirport(view, departure, R.string.popDeparture);
+                });
+                AirportsInfoManager.getInstance().getArrival(flightInfo.getArrival().getIata()).observe(getActivity(), arrival -> {
+                    popAirport(view, arrival, R.string.popArrival);
+                });
+            });
+        });
     }
 
     private void populateFlightInfo(View view, FlightInfo flight) {

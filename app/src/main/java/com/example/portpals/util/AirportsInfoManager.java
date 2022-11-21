@@ -89,4 +89,12 @@ public class AirportsInfoManager  extends ViewModel {
         }
         return arrival;
     }
+
+    public MutableLiveData<Airport> getDeparture() {
+        return departure;
+    }
+
+    public MutableLiveData<Airport> getArrival() {
+        return arrival;
+    }
 }

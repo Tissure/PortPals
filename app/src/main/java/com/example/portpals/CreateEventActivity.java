@@ -24,25 +24,32 @@ public class CreateEventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
 
-        initializeSpinner();
+        initializeUpTimeSpinner();
+        initializeCapacitySpinner();
     }
 
-    private void initializeSpinner() {
+    private void initializeUpTimeSpinner() {
         Spinner spinner = findViewById(R.id.spinner1);
-
         String[] time = getResources().getStringArray(R.array.timeLimits);
-
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(),
                 android.R.layout.simple_spinner_dropdown_item, time);
-
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+    }
 
+    private void initializeCapacitySpinner() {
+        Spinner spinner = findViewById(R.id.capacitySpinner);
+        String[] capacities = getResources().getStringArray(R.array.capacities);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(),
+                android.R.layout.simple_spinner_dropdown_item, capacities);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
     }
 
     public void createEventPart2(View v) {
         TextView title = findViewById(R.id.editEventName);
         Spinner spinner = findViewById(R.id.spinner1);
+        Spinner capacitySpinner = findViewById(R.id.capacitySpinner);
         TextView desc = findViewById(R.id.editEventBody);
 
         Intent intent = new Intent(this, CreateEventPinMapActivity.class);
@@ -55,6 +62,8 @@ public class CreateEventActivity extends AppCompatActivity {
 
         String eventDesc = desc.getText().toString();
         bundle.putString("desc", eventDesc);
+
+        bundle.putInt("capacity", Integer.parseInt(capacitySpinner.getSelectedItem().toString()));
 
         intent.putExtras(bundle);
 
