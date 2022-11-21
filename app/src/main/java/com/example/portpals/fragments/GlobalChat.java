@@ -32,9 +32,6 @@ public class GlobalChat extends Fragment implements View.OnClickListener {
         View rootView = inflater.inflate(R.layout.fragment_global_chat, container, false);
         //Create a path to listen for a click for each button
         rootView.findViewById(R.id.sendBtn).setOnClickListener(this);
-
-        EditText flightCodeView = rootView.findViewById(R.id.flightCode);
-
         // Inflate the layout for this fragment
         return rootView;
     }

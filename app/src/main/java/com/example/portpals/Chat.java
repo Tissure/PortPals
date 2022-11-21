@@ -37,52 +37,45 @@ public class Chat extends AppCompatActivity {
     public static final DatabaseReference databaseReference = firebaseDatabase.getReference();
 
     private final List<ChatList> chatLists = new ArrayList<>();
-    private String chatKey;
     private RecyclerView chattingRecyclerView;
     private ChatAdapter chatAdapter;
-    private AirportsInfoManager am = AirportsInfoManager.getInstance();
-    private final String iata = am.getDeparture().getValue().getIata();
-//    private String iata = "AAA";
+    private final String iata = AirportsInfoManager.getInstance().getDeparture().getValue().getIata();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        Bundle bundle = getIntent().getExtras();
-
+        final String UID = firebaseAuth.getCurrentUser().getUid();
         final ImageView backBtn = findViewById(R.id.backBtn);
         final TextView chatName = findViewById(R.id.chatName);
         final EditText messageEditText = findViewById(R.id.messageEditTxt);
         final ImageView sendBtn = findViewById(R.id.sendBtn);
+
+        // Setting up chat recycler view
         chattingRecyclerView = findViewById(R.id.chattingRecyclerView);
-
-        // get data from messages adapter class
-       // final String getName = getIntent().getStringExtra("name");
-
-        chatKey = getIntent().getStringExtra("chat_key");
-
-        final String UID = firebaseAuth.getCurrentUser().getUid();
-
         chattingRecyclerView.setHasFixedSize(true);
         chattingRecyclerView.setLayoutManager(new LinearLayoutManager(Chat.this));
-
         chatAdapter = new ChatAdapter(chatLists, Chat.this);
         chattingRecyclerView.setAdapter(chatAdapter);
 
+        // Get buddle from previous fragment
+        Bundle bundle = getIntent().getExtras();
         String chatType;
         String chatID;
         String chatroomName;
 
+        // Choose which chat to display
         if(bundle.getString("chatType").equals("Events")) {
 //            Event currentEvent = bundle.getParcelable("eventInfo");
             chatType = bundle.getString("chatType");
             chatID = bundle.getString("chatID");
-            chatroomName = bundle.getString("chatName")  + " CHAT";
+            chatroomName = bundle.getString("chatName")  + " Chat";
             chatName.setText(chatroomName);
         } else {
             chatType = "airportChat";
             chatID = "global";
-            chatName.setText(iata);
+            chatName.setText(iata + " Chat");
         }
 
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -95,7 +88,6 @@ public class Chat extends AppCompatActivity {
                             if(messagesSnapshot.hasChild("msg")) {
 
                                 final String messageTimeStamps = messagesSnapshot.getKey();
-
                                 final String getMsg = messagesSnapshot.child("msg").getValue(String.class);
                                 final String getUID = messagesSnapshot.child("UID").getValue(String.class);
                                 final String getDisplayName = snapshot.child("Users").child(UID).child("displayName").getValue(String.class);
@@ -128,10 +120,8 @@ public class Chat extends AppCompatActivity {
                 final String getTxtMessage = messageEditText.getText().toString();
                 final String currentTimestamp = String.valueOf(System.currentTimeMillis()).substring(0, 10);
 
-
                 databaseReference.child("Airports").child(iata).child(chatType).child(chatID).child("messages").child(currentTimestamp).child("msg").setValue(getTxtMessage);
                 databaseReference.child("Airports").child(iata).child(chatType).child(chatID).child("messages").child(currentTimestamp).child("UID").setValue(UID);
-
                 chattingRecyclerView.scrollToPosition(chatLists.size()-1);
                 // clear edit Text
                 messageEditText.setText("");
@@ -144,7 +134,5 @@ public class Chat extends AppCompatActivity {
                 finish();
             }
         });
-
     }
-
 }
