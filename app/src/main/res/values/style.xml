@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="eventListItemLayout">
+        <item name="android:background">@color/eventListColor</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">200dp</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_margin">25dp</item>
+    </style>
+
+</resources>
