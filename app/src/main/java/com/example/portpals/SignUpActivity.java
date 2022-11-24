@@ -18,9 +18,13 @@ import com.example.portpals.models.User;
 import com.example.portpals.util.Validator;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import java.util.UUID;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -80,11 +84,13 @@ public class SignUpActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivity(Intent.createChooser(intent, "Select Image from here..."));
+
+        // this method works for the intent, but is deprecated, try find a better one if possible
+        startActivityForResult(intent, 1);
     }
 
     private void uploadImage(String key) {
-        StorageReference profilePictureRef = storageReference.child(key);
+        StorageReference profilePictureRef = storageReference.child("images/" + key);
 
         final ProgressBar progressBar = new ProgressBar(this);
         progressBar.setTag("Uploading Image...");
@@ -132,36 +138,42 @@ public class SignUpActivity extends AppCompatActivity {
         String lastName = lastNameTextView.getText().toString();
 
         // create a firebase user
-        MainActivity.firebaseAuth.createUserWithEmailAndPassword(email, password)
+        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this, task -> {
                 if (task.isSuccessful()) {
                     // get firebase user and put them into the database
-                    FirebaseUser firebaseUser = MainActivity.firebaseAuth.getCurrentUser();
-                    String key = firebaseUser.getUid();
+                    FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+                    String userKey = firebaseUser.getUid();
 
                     // attempt to put the new user in the database
-                    User newUser = new User(email, displayName, firstName, lastName);
-                    Task putUserInDB = MainActivity.databaseReference.child("Users").child(key).setValue(newUser);
+                    User newUser = new User(email, displayName, firstName, lastName, userKey);
+                    FirebaseDatabase.getInstance().getReference().child("Users").child(userKey).setValue(newUser)
+                            .addOnCompleteListener(snapshot -> {
+                                if (!snapshot.isSuccessful()) {
+                                    String errMsg = snapshot.getException().getMessage();
+                                    Toast.makeText(this, errMsg,  Toast.LENGTH_LONG).show();
+                                    FirebaseAuth.getInstance().getCurrentUser().delete();
+                                }
+                            });
 
-                    // upload the user profile to the firebase cloud asynchronously
-                    new AsyncTaskLoader<String>(this) {
-                        @Nullable
-                        @Override
-                        public String loadInBackground() {
-                            uploadImage(key);
-                            return null;
-                        }
-                    };
+                    // if the user successfully logged in, then upload the image asynchronously
+//                    AsyncTaskLoader asyncTaskLoader = new AsyncTaskLoader<String>(this) {
+//                        @Nullable
+//                        @Override
+//                        public String loadInBackground() {
+//                            System.out.println("beginning image upload...");
+//                            uploadImage(userKey);
+//                            return null;
+//                        }
+//                    };
+//                    if (!asyncTaskLoader.isStarted()) {
+//                        asyncTaskLoader.startLoading();
+//                    }
+                    uploadImage(userKey);
 
-                    if (!putUserInDB.isSuccessful()) {
-                        String errMsg = putUserInDB.getException().getMessage();
-                        Toast.makeText(this, errMsg,  Toast.LENGTH_LONG).show();
-                        MainActivity.firebaseAuth.getCurrentUser().delete();
-                        return;
-                    }
-
+                    // send the user to the main page if they have logged in successfully
                     Intent intent = new Intent(this, MainActivity.class);
-                    intent.putExtra("key", key);
                     startActivity(intent);
                 } else {
                     Toast.makeText(this, "Failed to create user!", Toast.LENGTH_LONG).show();

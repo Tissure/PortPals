@@ -65,4 +65,7 @@ dependencies {
     // firebase cloud storage for files & images
     implementation 'com.google.firebase:firebase-storage:19.1.1'
     //implementation 'com.github.dhaval2404:imagepicker:1.7.4'
+
+    // used for getting an image from a url
+    implementation 'com.squareup.picasso:picasso:2.71828'
 }
