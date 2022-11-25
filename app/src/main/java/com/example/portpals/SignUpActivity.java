@@ -1,34 +1,29 @@
 package com.example.portpals;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.loader.content.AsyncTaskLoader;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.portpals.models.User;
 import com.example.portpals.util.Validator;
-import com.google.android.gms.cast.framework.media.ImagePicker;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
-import java.io.IOException;
 import java.util.UUID;
 
 public class SignUpActivity extends AppCompatActivity {
@@ -43,9 +38,9 @@ public class SignUpActivity extends AppCompatActivity {
     private ImageView profileImageView;
     private Button uploadProfilePictureButton;
 
-    private Uri filePath;
-    private FirebaseStorage storage;
-    private StorageReference storageReference;
+    private Uri uri;
+    private static FirebaseStorage storage = FirebaseStorage.getInstance();
+    private static StorageReference storageReference = storage.getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,71 +84,41 @@ public class SignUpActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivity(
-                Intent.createChooser(
-                        intent,
-                        "Select Image from here..."));
+
+        // this method works for the intent, but is deprecated, try find a better one if possible
+        startActivityForResult(intent, 1);
+    }
+
+    private void uploadImage(String key) {
+        StorageReference profilePictureRef = storageReference.child("images/" + key);
+
+        final ProgressBar progressBar = new ProgressBar(this);
+        progressBar.setTag("Uploading Image...");
+        progressBar.setVisibility(View.VISIBLE);
+
+        profilePictureRef.putFile(uri).addOnSuccessListener(taskSnapshot -> {
+            Snackbar.make(findViewById(android.R.id.content), "Image Uploaded.", Snackbar.LENGTH_LONG).show();
+                    progressBar.invalidate();
+            })
+            .addOnFailureListener(e -> {
+                Toast.makeText(getApplicationContext(), "Failed to upload a profile picture", Toast.LENGTH_LONG).show();
+                progressBar.invalidate();
+            })
+            .addOnProgressListener(snapshot -> {
+                double progressPercent = (100.00 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+                progressBar.setProgress((int)progressPercent);
+            });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        final int PICK_IMAGE_REQUEST = 22;
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            // Get the Uri of data
-            filePath = data.getData();
-            try {
-                // Setting image on image view using Bitmap
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                profileImageView.setImageBitmap(bitmap);
-            }
-
-            catch (IOException e) {
-                // Log the exception
-                e.printStackTrace();
-            }
-        }
-    }
-
-    // UploadImage method
-    private void uploadImage() {
-        if (filePath != null) {
-            // Code for showing progressDialog while uploading
-            ProgressDialog progressDialog
-                    = new ProgressDialog(this);
-            progressDialog.setTitle("Uploading...");
-            progressDialog.show();
-
-            // Defining the child of storageReference
-            StorageReference ref = storageReference.child("images/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
-
-            // adding listeners on upload
-            // or failure of image
-            // Progress Listener for loading percentage on the dialog box
-            ref.putFile(filePath)
-                    .addOnSuccessListener(
-                            taskSnapshot -> {
-                                // Image uploaded successfully
-                                // Dismiss dialog
-                                progressDialog.dismiss();
-                                Toast.makeText(getApplicationContext(), "Image Uploaded!!", Toast.LENGTH_SHORT).show();
-                            })
-
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            // Error, Image not uploaded
-                            progressDialog.dismiss();
-                            Toast.makeText(getApplicationContext(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnProgressListener(taskSnapshot -> {
-                                double progress = (100.0
-                                        * taskSnapshot.getBytesTransferred()
-                                        / taskSnapshot.getTotalByteCount());
-                                progressDialog.setMessage("Uploaded " + (int)progress + "%");
-                    });
+        final int requestCodeSuccess = 1;
+        if (requestCode == requestCodeSuccess && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            uri = data.getData();
+            profileImageView.setImageURI(uri);
+        } else {
+            System.out.println("Failed to fetch image");
         }
     }
 
@@ -173,52 +138,47 @@ public class SignUpActivity extends AppCompatActivity {
         String lastName = lastNameTextView.getText().toString();
 
         // create a firebase user
-        MainActivity.firebaseAuth.createUserWithEmailAndPassword(email, password)
+        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this, task -> {
                 if (task.isSuccessful()) {
                     // get firebase user and put them into the database
-                    FirebaseUser firebaseUser = MainActivity.firebaseAuth.getCurrentUser();
-                    String key = firebaseUser.getUid();
+                    FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+                    String userKey = firebaseUser.getUid();
 
                     // attempt to put the new user in the database
-                    User newUser = new User(email, displayName, firstName, lastName);
-                    Task putUserInDB = MainActivity.databaseReference.child("Users").child(key).setValue(newUser);
+                    User newUser = new User(email, displayName, firstName, lastName, userKey);
+                    FirebaseDatabase.getInstance().getReference().child("Users").child(userKey).setValue(newUser)
+                            .addOnCompleteListener(snapshot -> {
+                                if (!snapshot.isSuccessful()) {
+                                    String errMsg = snapshot.getException().getMessage();
+                                    Toast.makeText(this, errMsg,  Toast.LENGTH_LONG).show();
+                                    FirebaseAuth.getInstance().getCurrentUser().delete();
+                                }
+                            });
 
-                    // upload the user profile to the firebase cloud
-                    uploadImage();
+                    // if the user successfully logged in, then upload the image asynchronously
+//                    AsyncTaskLoader asyncTaskLoader = new AsyncTaskLoader<String>(this) {
+//                        @Nullable
+//                        @Override
+//                        public String loadInBackground() {
+//                            System.out.println("beginning image upload...");
+//                            uploadImage(userKey);
+//                            return null;
+//                        }
+//                    };
+//                    if (!asyncTaskLoader.isStarted()) {
+//                        asyncTaskLoader.startLoading();
+//                    }
+                    uploadImage(userKey);
 
-                    if (!putUserInDB.isSuccessful()) {
-                        String errMsg = putUserInDB.getException().getMessage();
-                        Toast.makeText(this, errMsg,  Toast.LENGTH_LONG).show();
-                        MainActivity.firebaseAuth.getCurrentUser().delete();
-                        return;
-                    }
-
+                    // send the user to the main page if they have logged in successfully
                     Intent intent = new Intent(this, MainActivity.class);
-                    intent.putExtra("key", key);
                     startActivity(intent);
                 } else {
                     Toast.makeText(this, "Failed to create user!", Toast.LENGTH_LONG).show();
                 }
         });
-    }
-
-    private User createNewUser(FirebaseUser firebaseUser) {
-        // set the firebase user display name to the one entered in the form
-        UserProfileChangeRequest.Builder builder = new UserProfileChangeRequest.Builder();
-        builder.setDisplayName(displayNameTextView.getText().toString());
-        firebaseUser.updateProfile(builder.build());
-
-        // set all the information to a new user instance
-        User user = new User();
-        user.setFirstName(firstNameTextView.getText().toString());
-        user.setLastName(lastNameTextView.getText().toString());
-        user.setEmail(firebaseUser.getEmail());
-        user.setDisplayName(firebaseUser.getDisplayName());
-        user.setFirstName(firstNameTextView.getText().toString());
-        user.setLastName(lastNameTextView.getText().toString());
-
-        return user;
     }
 
 }

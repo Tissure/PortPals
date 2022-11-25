@@ -1,18 +1,28 @@
 package com.example.portpals.recycleradapters;
 
+import android.content.ContentResolver;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.portpals.MainActivity;
 import com.example.portpals.R;
 import com.example.portpals.models.Event;
 import com.example.portpals.models.User;
 import com.example.portpals.util.ClickListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -20,6 +30,9 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
 
     private ArrayList<Event> eventList;
     private ClickListener listener;
+
+    private static FirebaseStorage storage = FirebaseStorage.getInstance();
+    private static StorageReference storageReference = storage.getReference();
 
     public ChatRecyclerAdapter(ArrayList<Event> eventList) {
         this.eventList = eventList;
@@ -29,7 +42,7 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
     @NonNull
     @Override
     public ChatRecyclerAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_list_item, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.event_list_item, parent, false);
         return new MyViewHolder(itemView);
     }
 
@@ -57,6 +70,20 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
         holder.roomTime.setText(roomTime);
         //holder.terminalNum.setText("Terminal " + terminalNum);
         holder.description.setText(description);
+
+        // set the profile picture if it exists
+        if (user != null) {
+            StorageReference profilePictureRef = storageReference.child("images/" + user.getProfilePictureKey());
+            if (profilePictureRef != null) {
+                profilePictureRef.getDownloadUrl().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Picasso.get().load(task.getResult()).into(holder.profile_picture);
+                    } else {
+                        System.out.println("Failed to get profile picture and put it on the event");
+                    }
+                });
+            }
+        }
     }
 
     @Override

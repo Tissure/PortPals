@@ -11,13 +11,16 @@ public class User implements Parcelable {
     private String email;
     private String displayName;
 
+    private String profilePictureKey;
+
     public User() {}
 
-    public User(String email, String displayName, String firstName, String lastName) {
+    public User(String email, String displayName, String firstName, String lastName, String profilePictureKey) {
         this.email = email;
         this.displayName = displayName;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.profilePictureKey = profilePictureKey;
     }
 
     protected User(Parcel in) {
@@ -25,6 +28,7 @@ public class User implements Parcelable {
         lastName = in.readString();
         email = in.readString();
         displayName = in.readString();
+        profilePictureKey = in.readString();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -71,6 +75,14 @@ public class User implements Parcelable {
         this.displayName = displayName;
     }
 
+    public String getProfilePictureKey() {
+        return profilePictureKey;
+    }
+
+    public void setProfilePictureKey(String profilePictureKey) {
+        this.profilePictureKey = profilePictureKey;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -78,6 +90,7 @@ public class User implements Parcelable {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", displayName='" + displayName + '\'' +
+                ", profilePictureKey='" + profilePictureKey + '\'' +
                 '}';
     }
 
@@ -92,6 +105,7 @@ public class User implements Parcelable {
         parcel.writeString(displayName);
         parcel.writeString(firstName);
         parcel.writeString(lastName);
+        parcel.writeString(profilePictureKey);
     }
 
 }
