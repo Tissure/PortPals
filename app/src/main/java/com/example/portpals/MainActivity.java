@@ -14,6 +14,7 @@ import com.example.portpals.fragments.ChatFragment;
 import com.example.portpals.fragments.EventFragment;
 import com.example.portpals.fragments.GlobalChat;
 import com.example.portpals.fragments.HomeFragment;
+import com.example.portpals.fragments.MapFragment;
 import com.example.portpals.fragments.ProfileFragment;
 import com.example.portpals.util.AirportsInfoManager;
 import com.example.portpals.util.FlightInfoManager;
@@ -76,6 +77,9 @@ public class MainActivity extends AppCompatActivity {
             Intent goSignIn = new Intent(this, SignInActivity.class);
             startActivity(goSignIn);
         }
+
+
+
     }
 
     public static Context getContext(){

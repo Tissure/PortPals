@@ -39,7 +39,11 @@ public class Chat extends AppCompatActivity {
     private final List<ChatList> chatLists = new ArrayList<>();
     private RecyclerView chattingRecyclerView;
     private ChatAdapter chatAdapter;
-    private final String iata = AirportsInfoManager.getInstance().getDeparture().getValue().getIata();
+    private static final String iata = AirportsInfoManager.getInstance().getDeparture().getValue().getIata();
+
+    public static String getIata() {
+        return iata;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,9 +105,10 @@ public class Chat extends AppCompatActivity {
                                 chatAdapter.updateChatList(chatLists);
                             }
                         }
-                        chattingRecyclerView.scrollToPosition(chatLists.size()-1);
+
                     }
                 }
+                chattingRecyclerView.scrollToPosition(chatLists.size()-1);
             }
 
             @Override
@@ -111,7 +116,18 @@ public class Chat extends AppCompatActivity {
                 Log.d("Crashed while reading chat", error.getMessage());
             }
         });
-
+//        databaseReference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//
+//                chattingRecyclerView.scrollToPosition(chatLists.size()-1);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Log.d("Crashed while reading chat", error.getMessage());
+//            }
+//        });
 
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override

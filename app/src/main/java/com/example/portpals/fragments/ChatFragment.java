@@ -11,8 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.portpals.Chat;
+import com.example.portpals.CreateEventActivity;
 import com.example.portpals.R;
 import com.example.portpals.models.Event;
 import com.example.portpals.recycleradapters.ChatRecyclerAdapter;
@@ -59,6 +61,11 @@ public class ChatFragment extends Fragment implements ClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chatrooms, container, false);
+        Button createEventBtn = view.findViewById(R.id.createEventBtn);
+        createEventBtn.setOnClickListener(view1 -> {
+            Intent intent = new Intent(getActivity(), CreateEventActivity.class);
+            startActivity(intent);
+        });
         return view;
     }
 
@@ -70,6 +77,7 @@ public class ChatFragment extends Fragment implements ClickListener {
         initEventList();
         recyclerView = getActivity().findViewById(R.id.chatRecyclerView);
     }
+
 
     @Override
     public void onClick(View view, int position) {
@@ -91,4 +99,8 @@ public class ChatFragment extends Fragment implements ClickListener {
 //        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, chatRoomClickedOn).commit();
     }
 
+//    public void createEvent(View view) {
+//        Intent intent = new Intent(getActivity(), CreateEventActivity.class);
+//        startActivity(intent);
+//    }
 }

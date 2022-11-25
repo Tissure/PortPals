@@ -83,8 +83,8 @@ public class CreateEventSummaryActivity extends AppCompatActivity {
         newEvent.setName(bundle.getString("title"));
         newEvent.setTags(bundle.getStringArrayList("tags"));
         newEvent.setUpTime(bundle.getString("time"));
-        newEvent.setLatitude(bundle.getString("lng"));
-        newEvent.setLongitude(bundle.getString("lat"));
+        newEvent.setLatitude(bundle.getString("lat"));
+        newEvent.setLongitude(bundle.getString("lng"));
         newEvent.setDescription(bundle.getString("desc"));
 
         // obtain the current logged in user's data and shove it in the event
