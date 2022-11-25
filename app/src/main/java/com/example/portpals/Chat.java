@@ -103,12 +103,12 @@ public class Chat extends AppCompatActivity {
                                 ChatList chatList = new ChatList(getUID, getDisplayName,getMsg, simpleDateFormat.format(date), simpleTimeFormat.format(date));
                                 chatLists.add(chatList);
                                 chatAdapter.updateChatList(chatLists);
+
                             }
                         }
-
+                        chattingRecyclerView.scrollToPosition(chatLists.size()-1);
                     }
                 }
-                chattingRecyclerView.scrollToPosition(chatLists.size()-1);
             }
 
             @Override

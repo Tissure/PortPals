@@ -10,6 +10,10 @@ import java.util.List;
 
 public class Event implements Parcelable {
 
+    @SerializedName("iata")
+    @Expose
+    private String iata;
+
     @SerializedName("name")
     @Expose
     private String name;
@@ -75,6 +79,14 @@ public class Event implements Parcelable {
             return new Event[size];
         }
     };
+
+    public String getIata() {
+        return iata;
+    }
+
+    public void setIata(String iata) {
+        this.iata = iata;
+    }
 
     public int getOccupants() {
         return occupants;

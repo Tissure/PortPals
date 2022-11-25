@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     public MainActivity() {
         fragmentMap = new HashMap<>();
         fragmentMap.put(R.id.home, new HomeFragment());
-        fragmentMap.put(R.id.chat, new ChatFragment());
+        fragmentMap.put(R.id.chat, new MapFragment());
         fragmentMap.put(R.id.globalChat, new GlobalChat());
         fragmentMap.put(R.id.event, new EventFragment());
         fragmentMap.put(R.id.profile, new ProfileFragment());

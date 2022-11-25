@@ -86,6 +86,7 @@ public class CreateEventSummaryActivity extends AppCompatActivity {
         newEvent.setLatitude(bundle.getString("lat"));
         newEvent.setLongitude(bundle.getString("lng"));
         newEvent.setDescription(bundle.getString("desc"));
+        newEvent.setIata(iata);
 
         // obtain the current logged in user's data and shove it in the event
         Query creatorUserQuery = databaseReference.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -100,7 +101,8 @@ public class CreateEventSummaryActivity extends AppCompatActivity {
                 }
 
                 // upload the event to the firebase database
-                databaseReference.child("Airports").child(iata).child("Events").child(id).setValue(newEvent);
+                assert id != null;
+                databaseReference.child("Events").child(id).setValue(newEvent);
             }
         });
     }

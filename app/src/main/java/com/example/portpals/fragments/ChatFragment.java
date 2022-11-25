@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.portpals.Chat;
 import com.example.portpals.CreateEventActivity;
@@ -27,6 +28,7 @@ import com.google.firebase.database.Query;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ChatFragment extends Fragment implements ClickListener {
 
@@ -37,13 +39,16 @@ public class ChatFragment extends Fragment implements ClickListener {
 
     private void initEventList() {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        Query eventsQuery = databaseReference.child("Airports").child(AirportsInfoManager.getInstance().getDeparture().getValue().getIata()).child("Events");
+        String iata = Chat.getIata();
+        Query eventsQuery = databaseReference.child("Events");
         eventsQuery.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (DataSnapshot child : task.getResult().getChildren()) {
-                    Gson gson = new Gson();
-                    Event currentEvent = gson.fromJson(gson.toJson(child.getValue()), Event.class);
-                    eventList.add(currentEvent);
+                    if(Objects.equals(child.child("iata").getValue(String.class), iata)) {
+                        Gson gson = new Gson();
+                        Event currentEvent = gson.fromJson(gson.toJson(child.getValue()), Event.class);
+                        eventList.add(currentEvent);
+                    }
                 }
                 ChatRecyclerAdapter adapter = new ChatRecyclerAdapter(eventList);
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
