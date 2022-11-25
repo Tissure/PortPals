@@ -8,6 +8,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+
 public class SignInActivity extends AppCompatActivity {
 
     @Override
@@ -43,7 +48,7 @@ public class SignInActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(this, "Invalid user name or password!", Toast.LENGTH_LONG).show();
                 }
-        });
+            });
     }
 
 }

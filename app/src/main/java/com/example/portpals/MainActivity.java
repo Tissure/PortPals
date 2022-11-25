@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         if (currentUser != null) {
             System.out.println("user signed in!");
+            System.out.println(currentUser.getEmail());
             bottomNavBar = findViewById(R.id.bottomNavBar);
             getSupportFragmentManager().beginTransaction().replace(R.id.container, fragmentMap.get(R.id.home)).commit();
 

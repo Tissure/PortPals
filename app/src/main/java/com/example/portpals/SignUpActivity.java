@@ -134,17 +134,16 @@ public class SignUpActivity extends AppCompatActivity {
 
         // create a firebase user
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this, task -> {
+            .addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     // get firebase user and put them into the database
                     FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
                     String userKey = firebaseUser.getUid();
 
                     // attempt to put the new user in the database
                     User newUser = new User(email, displayName, firstName, lastName, userKey);
                     FirebaseDatabase.getInstance().getReference().child("Users").child(userKey).setValue(newUser)
-                            .addOnCompleteListener(snapshot -> {
+                            .addOnCompleteListener(this, snapshot -> {
                                 if (!snapshot.isSuccessful()) {
                                     String errMsg = snapshot.getException().getMessage();
                                     Toast.makeText(this, errMsg,  Toast.LENGTH_LONG).show();
@@ -153,18 +152,6 @@ public class SignUpActivity extends AppCompatActivity {
                             });
 
                     // if the user successfully logged in, then upload the image asynchronously
-//                    AsyncTaskLoader asyncTaskLoader = new AsyncTaskLoader<String>(this) {
-//                        @Nullable
-//                        @Override
-//                        public String loadInBackground() {
-//                            System.out.println("beginning image upload...");
-//                            uploadImage(userKey);
-//                            return null;
-//                        }
-//                    };
-//                    if (!asyncTaskLoader.isStarted()) {
-//                        asyncTaskLoader.startLoading();
-//                    }
                     uploadImage(userKey);
 
                     // send the user to the main page if they have logged in successfully
