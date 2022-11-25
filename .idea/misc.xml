@@ -6,18 +6,25 @@
         <entry key="..\:/Term3/Android/PortPals/PortPals/app/src/main/res/layout/activity_landing_page.xml" value="0.1" />
         <entry key="..\:/Term3/Android/PortPals/app/src/main/res/layout/activity_chat.xml" value="0.1" />
         <entry key="..\:/Term3/Android/PortPals/app/src/main/res/layout/activity_create_event.xml" value="0.19635416666666666" />
+        <entry key="..\:/Term3/Android/PortPals/app/src/main/res/layout/activity_create_event_summary.xml" value="0.1" />
+        <entry key="..\:/Term3/Android/PortPals/app/src/main/res/layout/activity_create_event_tag.xml" value="0.1" />
+        <entry key="..\:/Term3/Android/PortPals/app/src/main/res/layout/activity_edit_profile.xml" value="0.1" />
         <entry key="..\:/Term3/Android/PortPals/app/src/main/res/layout/activity_event_history.xml" value="0.19635416666666666" />
         <entry key="..\:/Term3/Android/PortPals/app/src/main/res/layout/activity_friend_activity.xml" value="0.19635416666666666" />
         <entry key="..\:/Term3/Android/PortPals/app/src/main/res/layout/activity_landing_page.xml" value="0.19635416666666666" />
         <entry key="..\:/Term3/Android/PortPals/app/src/main/res/layout/activity_main.xml" value="0.19635416666666666" />
         <entry key="..\:/Term3/Android/PortPals/app/src/main/res/layout/activity_setting.xml" value="0.19635416666666666" />
         <entry key="..\:/Term3/Android/PortPals/app/src/main/res/layout/activity_sign_in.xml" value="0.1" />
-        <entry key="..\:/Term3/Android/PortPals/app/src/main/res/layout/activity_sign_up.xml" value="0.25" />
+        <entry key="..\:/Term3/Android/PortPals/app/src/main/res/layout/activity_sign_up.xml" value="0.1" />
         <entry key="..\:/Term3/Android/PortPals/app/src/main/res/layout/chat_adapter_layout.xml" value="0.1" />
         <entry key="..\:/Term3/Android/PortPals/app/src/main/res/layout/chat_list_item.xml" value="0.19635416666666666" />
+        <entry key="..\:/Term3/Android/PortPals/app/src/main/res/layout/event_list_item.xml" value="0.19635416666666666" />
         <entry key="..\:/Term3/Android/PortPals/app/src/main/res/layout/fragment_chat.xml" value="0.1" />
         <entry key="..\:/Term3/Android/PortPals/app/src/main/res/layout/fragment_chatrooms.xml" value="0.19635416666666666" />
         <entry key="..\:/Term3/Android/PortPals/app/src/main/res/layout/fragment_event.xml" value="0.1" />
+        <entry key="..\:/Term3/Android/PortPals/app/src/main/res/layout/fragment_global_chat.xml" value="0.1" />
+        <entry key="..\:/Term3/Android/PortPals/app/src/main/res/layout/fragment_home.xml" value="0.1" />
+        <entry key="..\:/Term3/Android/PortPals/app/src/main/res/layout/fragment_profile.xml" value="0.1" />
         <entry key="..\:/Term3/Android/PortPals/app/src/main/res/layout/messages_adapter_layout.xml" value="0.1" />
         <entry key="..\:/Term3/Android/PortPals/app/src/main/res/menu/bottom_navbar.xml" value="0.19635416666666666" />
       </map>

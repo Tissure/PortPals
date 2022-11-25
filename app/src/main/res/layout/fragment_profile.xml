@@ -1,34 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.ProfileFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="-24dp"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/profile_page_picture"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:srcCompat="@drawable/ic_baseline_account_circle_24" />
 
     <Button
-        android:id="@+id/btnToSignUp"
-        android:layout_width="243dp"
-        android:layout_height="49dp"
-        android:text="@string/sign_in_sign_up"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.356"
-        android:backgroundTint="@color/button_color"
-        />
+        android:id="@+id/edit_profile_button"
+        android:layout_marginTop="25dp"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit Profile"
+        android:textSize="30sp"/>
 
     <Button
-        android:id="@+id/btnEventHistory"
-        android:layout_width="243dp"
-        android:layout_height="49dp"
+        android:id="@+id/event_history_button"
+        android:layout_marginTop="25dp"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/event_history"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnToSignUp"
-        android:backgroundTint="@color/button_color"
-        app:layout_constraintVertical_bias="0.198" />
+        android:textSize="30sp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/logout_button"
+        android:layout_marginTop="25dp"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Log out"
+        android:textSize="30sp"/>
+
+
+</LinearLayout>
