@@ -1,5 +1,7 @@
 package com.example.portpals;
 
+import static com.example.portpals.fragments.FlightInfoFragment.iata;
+
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -30,6 +32,10 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -40,6 +46,7 @@ public class  CreateEventPinMapActivity extends AppCompatActivity implements OnM
     Marker eventLocation;
     Location mLastLocation;
     GoogleMap myMap;
+    private final DatabaseReference db = MainActivity.databaseReference;
 
     private static final int LOCATION_PERMISSION_CODE = 101;
 
@@ -103,6 +110,19 @@ public class  CreateEventPinMapActivity extends AppCompatActivity implements OnM
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             myMap.setMyLocationEnabled(true);
+            db.addValueEventListener(new ValueEventListener() {
+                 @Override
+                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+                     Double airportLat = snapshot.child("Airports").child(iata).child("lat").getValue(Double.class);
+                     Double airportLon = snapshot.child("Airports").child(iata).child("lon").getValue(Double.class);
+                     LatLng airport = new LatLng(airportLat, airportLon);
+                     googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(airport, 13));
+                 }
+                 @Override
+                 public void onCancelled(@NonNull DatabaseError error) {
+
+                 }
+             });
             myMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                 @Override
                 public void onMapClick(LatLng point) {
