@@ -122,7 +122,7 @@ public class Chat extends AppCompatActivity {
             if(!getTxtMessage.isEmpty()){
                 databaseReference.child("Chat").child(iata).child(chatType).child(chatID).child("messages").child(currentTimestamp).child("msg").setValue(getTxtMessage);
                 databaseReference.child("Chat").child(iata).child(chatType).child(chatID).child("messages").child(currentTimestamp).child("UID").setValue(UID);
-                chattingRecyclerView.scrollToPosition(chatLists.size()-1);
+//                chattingRecyclerView.scrollToPosition(chatLists.size()-1);
             }
             // clear edit Text
             messageEditText.setText("");
