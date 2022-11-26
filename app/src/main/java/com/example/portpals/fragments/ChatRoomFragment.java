@@ -4,14 +4,39 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.portpals.R;
-import com.example.portpals.services.ChatRoomInfo;
+import com.example.portpals.chat.ChatAdapter;
+import com.example.portpals.chat.ChatList;
+import com.example.portpals.models.ChatRoomInfo;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChatRoomFragment extends Fragment {
+
+    public static final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    public static final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    public static final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+
+    private final List<ChatList> chatLists = new ArrayList<>();
+    private String chatKey;
+    String getUserMobile = "";
+    private RecyclerView chattingRecyclerView;
+    private ChatAdapter chatAdapter;
+    private boolean loadingFirstTime = true;
+
 
     private ChatRoomInfo info;
 
@@ -29,7 +54,16 @@ public class ChatRoomFragment extends Fragment {
                              Bundle savedInstanceState) {
         // inflate the layout for this fragment
         View chatView = inflater.inflate(R.layout.fragment_chat, container, false);
+        Toast.makeText(getActivity(), "All Field REQUIRED", Toast.LENGTH_SHORT).show();
 
+
+//        Button backBtn = chatView.findViewById(R.id.backBtn);
+//        backBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                getFragmentManager().beginTransaction().remove(ActivityFragment.this).commit();
+//            }
+//        });
         return chatView;
     }
 
@@ -38,8 +72,8 @@ public class ChatRoomFragment extends Fragment {
 
         // set the text views information to the information about the chat
         super.onStart();
-        TextView chatTime = getActivity().findViewById(R.id.chatTime);
-        chatTime.setText(info.getRoomTime() + " minutes remaining");
+
     }
+
 
 }

@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Term3/Android/PortPals/PortPals/app/src/main/res/layout/activity_landing_page.xml" value="0.1" />
+        <entry key="..\:/Term3/Android/PortPals/app/src/main/res/layout/activity_create_event.xml" value="0.19635416666666666" />
+        <entry key="..\:/Term3/Android/PortPals/app/src/main/res/layout/activity_event_history.xml" value="0.19635416666666666" />
+        <entry key="..\:/Term3/Android/PortPals/app/src/main/res/layout/activity_friend_activity.xml" value="0.19635416666666666" />
+        <entry key="..\:/Term3/Android/PortPals/app/src/main/res/layout/activity_landing_page.xml" value="0.19635416666666666" />
+        <entry key="..\:/Term3/Android/PortPals/app/src/main/res/layout/activity_main.xml" value="0.19635416666666666" />
+        <entry key="..\:/Term3/Android/PortPals/app/src/main/res/layout/activity_setting.xml" value="0.19635416666666666" />
+        <entry key="..\:/Term3/Android/PortPals/app/src/main/res/layout/activity_sign_in.xml" value="0.1" />
+        <entry key="..\:/Term3/Android/PortPals/app/src/main/res/layout/activity_sign_up.xml" value="0.25" />
+        <entry key="..\:/Term3/Android/PortPals/app/src/main/res/layout/chat_list_item.xml" value="0.19635416666666666" />
+        <entry key="..\:/Term3/Android/PortPals/app/src/main/res/layout/fragment_chatrooms.xml" value="0.19635416666666666" />
+        <entry key="..\:/Term3/Android/PortPals/app/src/main/res/menu/bottom_navbar.xml" value="0.19635416666666666" />
+      </map>
+    </option>
+  </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK" />
 </project>

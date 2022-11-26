@@ -15,16 +15,12 @@ public class LandingPageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_landing_page);
 
         Button signUP = findViewById(R.id.btnLoginSignUp);
-        signUP.setTextColor(Color.parseColor("black"));
-        signUP.setBackgroundColor(Color.parseColor("white"));
         signUP.setOnClickListener(view -> {
             Intent intent = new Intent(this, SignInActivity.class);
             startActivity(intent);
         });
 
         Button toMain = findViewById(R.id.btnEnterFlightNum);
-        toMain.setTextColor(Color.parseColor("white"));
-        toMain.setBackgroundColor(Color.parseColor("blue"));
         toMain.setOnClickListener(view -> {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);

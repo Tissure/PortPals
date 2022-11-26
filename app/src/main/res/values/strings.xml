@@ -20,7 +20,7 @@
     <string name="email_address">Email Address</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
-    <string name="phone_number">User ID</string>
+    <string name="display_name">Display Name</string>
     <string name="a_valid_password_has_at_least_8_characters_and_includes_at_lease_one_uppercase_letter_one_lowercase_letter_one_number_and_one_special_character">A valid password has at least 8 characters and includes at lease one uppercase letter, one lowercase letter, one number and one special character.</string>
     <string name="create_account">Create Account</string>
 
@@ -49,4 +49,40 @@ Tournament best out of 3! JOIN NOW!</string>
     <string name="terminal">Terminal ###</string>
     <string name="participants">5/12</string>
 
+    <string name="already_have_an_account_click_here_to_sign_in">Already have an account? Click here to sign in</string>
+
+    <string name="nextBtn">Next</string>
+    <string name="eventTitle">Title</string>
+    <string name="selectTime">Select Time Length:</string>
+    <string name="step3">Select your event\'s tags:</string>
+    <string name="reason1">Gaming</string>
+    <string name="reason2">Drinks</string>
+    <string name="reason3">Networking</string>
+    <string name="reason4">Sports</string>
+    <string name="reason5">Music</string>
+    <string name="summary">Summary</string>
+    <string name="eventTime">Duration</string>
+    <string name="eventDesc">Description</string>
+    <string name="eventTags">Tags</string>
+
+    <string-array name="timeLimits">
+        <item>30 minutes</item>
+        <item>45 minutes</item>
+        <item>1 hour</item>
+        <item>1.5 hours</item>
+        <item>2 hours</item>
+        <item>2.5 hours</item>
+    </string-array>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="lat">Latitude:</string>
+    <string name="lng">Longitude</string>
+
+
+
+    <string name="flight_scheduled">Scheduled</string>
+    <string name="temp">TEMP</string>
+    <string name="fb_airports">Airports</string>
+
+    <string name="popDeparture">popDeparture</string>
+    <string name="popArrival">popArrival</string>
 </resources>

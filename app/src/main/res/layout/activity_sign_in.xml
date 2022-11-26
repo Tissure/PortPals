@@ -20,13 +20,13 @@
         />
 
     <EditText
-        android:id="@+id/editTextPhone"
+        android:id="@+id/editTextEmail"
         android:layout_width="365dp"
         android:layout_height="60dp"
         android:autofillHints=""
         android:ems="10"
-        android:hint="@string/phone_number"
-        android:inputType="phone"
+        android:hint="@string/email_address"
+        android:inputType="textEmailAddress"
         android:textColorHint="#757575"
         android:layout_gravity="center"
         />
