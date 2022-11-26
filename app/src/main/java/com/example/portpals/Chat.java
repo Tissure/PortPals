@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,8 +14,6 @@ import android.widget.TextView;
 import com.example.portpals.chat.ChatAdapter;
 import com.example.portpals.chat.ChatList;
 import com.example.portpals.fragments.FlightInfoFragment;
-import com.example.portpals.models.Event;
-import com.example.portpals.util.AirportsInfoManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class Chat extends AppCompatActivity {
 
@@ -49,11 +47,12 @@ public class Chat extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         String iata = FlightInfoFragment.getIata();
 
-        final String UID = firebaseAuth.getCurrentUser().getUid();
+        final String UID = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
         final ImageView backBtn = findViewById(R.id.backBtn);
         final TextView chatName = findViewById(R.id.chatName);
         final EditText messageEditText = findViewById(R.id.messageEditTxt);
         final ImageView sendBtn = findViewById(R.id.sendBtn);
+
         // Setting up chat recycler view
         chattingRecyclerView = findViewById(R.id.chattingRecyclerView);
         chattingRecyclerView.setHasFixedSize(true);
@@ -61,7 +60,7 @@ public class Chat extends AppCompatActivity {
         chatAdapter = new ChatAdapter(chatLists, Chat.this);
         chattingRecyclerView.setAdapter(chatAdapter);
 
-        // Get buddle from previous fragment
+        // Get bundle from previous fragment
         Bundle bundle = getIntent().getExtras();
         String chatType;
         String chatID;
@@ -76,7 +75,8 @@ public class Chat extends AppCompatActivity {
         } else {
             chatType = "airportChat";
             chatID = "global";
-            chatName.setText(iata + " Chat");
+            String text = iata + " Chat";
+            chatName.setText(text);
         }
 
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -92,8 +92,9 @@ public class Chat extends AppCompatActivity {
                                 final String messageTimeStamps = messagesSnapshot.getKey();
                                 final String getMsg = messagesSnapshot.child("msg").getValue(String.class);
                                 final String getUID = messagesSnapshot.child("UID").getValue(String.class);
-                                final String getDisplayName = snapshot.child("Users").child(UID).child("displayName").getValue(String.class);
+                                final String getDisplayName = snapshot.child("Users").child(getUID).child("displayName").getValue(String.class);
 
+                                assert messageTimeStamps != null;
                                 Timestamp timestamp = new Timestamp(Long.parseLong(messageTimeStamps));
                                 Date date = new Date(timestamp.getTime());
                                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
@@ -107,7 +108,6 @@ public class Chat extends AppCompatActivity {
                     }
                 }
                 chattingRecyclerView.scrollToPosition(chatLists.size()-1);
-
             }
 
             @Override
@@ -116,29 +116,20 @@ public class Chat extends AppCompatActivity {
             }
         });
 
-        sendBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final String getTxtMessage = messageEditText.getText().toString();
-                final String currentTimestamp = String.valueOf(System.currentTimeMillis()).substring(0, 10);
-                if(!getTxtMessage.isEmpty()){
-                    databaseReference.child("Chat").child(iata).child(chatType).child(chatID).child("messages").child(currentTimestamp).child("msg").setValue(getTxtMessage);
-                    databaseReference.child("Chat").child(iata).child(chatType).child(chatID).child("messages").child(currentTimestamp).child("UID").setValue(UID);
-                    chattingRecyclerView.scrollToPosition(chatLists.size()-1);
-                }
-
-                // clear edit Text
-                messageEditText.setText("");
+        sendBtn.setOnClickListener(view -> {
+            final String getTxtMessage = messageEditText.getText().toString();
+            final String currentTimestamp = String.valueOf(System.currentTimeMillis()).substring(0, 10);
+            if(!getTxtMessage.isEmpty()){
+                databaseReference.child("Chat").child(iata).child(chatType).child(chatID).child("messages").child(currentTimestamp).child("msg").setValue(getTxtMessage);
+                databaseReference.child("Chat").child(iata).child(chatType).child(chatID).child("messages").child(currentTimestamp).child("UID").setValue(UID);
+                chattingRecyclerView.scrollToPosition(chatLists.size()-1);
             }
+            // clear edit Text
+            messageEditText.setText("");
         });
 
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Event currentEvent = bundle.getParcelable("eventInfo");
-//                currentEvent.decOccupants();
-                finish();
-            }
+        backBtn.setOnClickListener(view -> {
+            finish();
         });
     }
 }
