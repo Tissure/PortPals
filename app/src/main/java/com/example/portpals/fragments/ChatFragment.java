@@ -50,11 +50,9 @@ public class ChatFragment extends Fragment implements ClickListener {
         eventsQuery.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (DataSnapshot child : task.getResult().child(iata).getChildren()) {
-
                     Gson gson = new Gson();
                     Event currentEvent = gson.fromJson(gson.toJson(child.getValue()), Event.class);
                     eventList.add(currentEvent);
-
                 }
                 ChatRecyclerAdapter adapter = new ChatRecyclerAdapter(eventList);
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -89,29 +87,15 @@ public class ChatFragment extends Fragment implements ClickListener {
         recyclerView = getActivity().findViewById(R.id.chatRecyclerView);
     }
 
-
     @Override
     public void onClick(View view, int position) {
         eventList.get(position).incOccupants();
         Intent intent = new Intent(this.getActivity(), Chat.class);
         Bundle bundle = new Bundle();
-//        bundle.getParcelable("key ",eventList.get(position));
-
         bundle.putString("chatType", "Events");
         bundle.putString("chatID", eventList.get(position).getId());
         bundle.putString("chatName", eventList.get(position).getName());
         intent.putExtras(bundle);
         startActivity(intent);
-
-//        ChatRoomFragment chatRoomClickedOn = new ChatRoomFragment();
-//        Bundle bundle = new Bundle();
-//        bundle.putParcelable("eventInfo", eventList.get(position));
-//        chatRoomClickedOn.setArguments(bundle);
-//        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, chatRoomClickedOn).commit();
     }
-
-//    public void createEvent(View view) {
-//        Intent intent = new Intent(getActivity(), CreateEventActivity.class);
-//        startActivity(intent);
-//    }
 }

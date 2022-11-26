@@ -7,8 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.portpals.fragments.ChatFragment;
-import com.example.portpals.fragments.EventFragment;
 import com.example.portpals.fragments.EventsFragment;
 import com.example.portpals.fragments.GlobalChat;
 import com.example.portpals.fragments.HomeFragment;
@@ -38,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
         fragmentMap.put(R.id.home, new HomeFragment());
         fragmentMap.put(R.id.chat, new EventsFragment());
         fragmentMap.put(R.id.globalChat, new GlobalChat());
-        fragmentMap.put(R.id.event, new EventFragment());
         fragmentMap.put(R.id.profile, new ProfileFragment());
     }
 

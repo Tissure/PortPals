@@ -1,7 +1,10 @@
 package com.example.portpals.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -29,11 +32,13 @@ public class EventsFragment extends Fragment {
         fragmentMap.put(R.id.map2, new MapFragment());
     }
 
+
+
+
     @Override
     public void onResume() {
         super.onResume();
-        Toast.makeText(getContext(),"RESUME",Toast.LENGTH_SHORT).show();
-//        getParentFragmentManager().beginTransaction().replace(R.id.eventContainer, Objects.requireNonNull(fragmentMap.get(R.id.list2))).commit();
+        getParentFragmentManager().beginTransaction().replace(R.id.eventContainer, Objects.requireNonNull(fragmentMap.get(R.id.list2))).commit();
     }
 
     @Override
@@ -44,7 +49,7 @@ public class EventsFragment extends Fragment {
 
         BottomNavigationView eventNavbar = view.findViewById(R.id.eventNavbar);
         FragmentManager fragmentManager = getParentFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.eventContainer, Objects.requireNonNull(fragmentMap.get(R.id.list2))).commit();
+
 
         eventNavbar.setOnItemSelectedListener(item -> {
             Fragment f = fragmentMap.get(item.getItemId());
