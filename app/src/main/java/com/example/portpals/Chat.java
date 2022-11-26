@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 public class Chat extends AppCompatActivity {
 
@@ -82,27 +84,28 @@ public class Chat extends AppCompatActivity {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                 if(snapshot.hasChild("Chat")) {
                     if(snapshot.child("Chat").child(iata).child(chatType).child(chatID).hasChild("messages")) {
                         chatLists.clear();
                         for(DataSnapshot messagesSnapshot : snapshot.child("Chat").child(iata).child(chatType).child(chatID).child("messages").getChildren()){
 
                             if(messagesSnapshot.hasChild("msg")) {
-
                                 final String messageTimeStamps = messagesSnapshot.getKey();
                                 final String getMsg = messagesSnapshot.child("msg").getValue(String.class);
                                 final String getUID = messagesSnapshot.child("UID").getValue(String.class);
-                                final String getDisplayName = snapshot.child("Users").child(getUID).child("displayName").getValue(String.class);
+                                if(getUID != null) {
+                                    final String getDisplayName = snapshot.child("Users").child(getUID).child("displayName").getValue(String.class);
+                                    assert messageTimeStamps != null;
+                                    Timestamp timestamp = new Timestamp(Long.parseLong(messageTimeStamps));
+                                    Date date = new Date(timestamp.getTime());
+                                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                                    SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
 
-                                assert messageTimeStamps != null;
-                                Timestamp timestamp = new Timestamp(Long.parseLong(messageTimeStamps));
-                                Date date = new Date(timestamp.getTime());
-                                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-                                SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
-
-                                ChatList chatList = new ChatList(getUID, getDisplayName,getMsg, simpleDateFormat.format(date), simpleTimeFormat.format(date));
-                                chatLists.add(chatList);
-                                chatAdapter.updateChatList(chatLists);
+                                    ChatList chatList = new ChatList(getUID, getDisplayName,getMsg, simpleDateFormat.format(date), simpleTimeFormat.format(date));
+                                    chatLists.add(chatList);
+                                    chatAdapter.updateChatList(chatLists);
+                                }
                             }
                         }
                     }
@@ -122,14 +125,11 @@ public class Chat extends AppCompatActivity {
             if(!getTxtMessage.isEmpty()){
                 databaseReference.child("Chat").child(iata).child(chatType).child(chatID).child("messages").child(currentTimestamp).child("msg").setValue(getTxtMessage);
                 databaseReference.child("Chat").child(iata).child(chatType).child(chatID).child("messages").child(currentTimestamp).child("UID").setValue(UID);
-//                chattingRecyclerView.scrollToPosition(chatLists.size()-1);
             }
             // clear edit Text
             messageEditText.setText("");
         });
 
-        backBtn.setOnClickListener(view -> {
-            finish();
-        });
+        backBtn.setOnClickListener(view -> finish());
     }
 }
