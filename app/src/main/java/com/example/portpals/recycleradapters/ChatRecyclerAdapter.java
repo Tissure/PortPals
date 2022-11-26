@@ -97,21 +97,20 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView titleText;
-        private TextView profileName;
-        private TextView capacity;
-        private TextView roomTime;
-        private TextView terminalNum;
-        private TextView description;
+        private final TextView titleText;
+        private final TextView profileName;
+        private final TextView capacity;
+        private final TextView roomTime;
+        private final TextView description;
 
-        private ImageView profile_picture;
+        private final ImageView profile_picture;
 
         public MyViewHolder(@NonNull final View itemView) {
             super(itemView);
             titleText = itemView.findViewById(R.id.title);
             profileName = itemView.findViewById(R.id.profile_name);
             profile_picture = itemView.findViewById(R.id.profile_picture);
-            terminalNum = itemView.findViewById(R.id.terminal);
+            TextView terminalNum = itemView.findViewById(R.id.terminal);
             roomTime = itemView.findViewById(R.id.roomTime);
             capacity = itemView.findViewById(R.id.participants);
             description = itemView.findViewById(R.id.eventDescription);

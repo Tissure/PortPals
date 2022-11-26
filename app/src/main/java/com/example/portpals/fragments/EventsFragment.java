@@ -16,18 +16,22 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 
 public class EventsFragment extends Fragment {
 
-
-    private BottomNavigationView eventNavbar;
     private Map<Integer, Fragment> fragmentMap;
 
-    public EventsFragment() {
+
+    @Override
+    public void onResume() {
+        super.onResume();
         fragmentMap = new HashMap<>();
         fragmentMap.put(R.id.list2, new ChatFragment());
         fragmentMap.put(R.id.map2, new MapFragment());
+        Toast.makeText(getContext(),"RESUME",Toast.LENGTH_SHORT).show();
+        getParentFragmentManager().beginTransaction().replace(R.id.eventContainer, Objects.requireNonNull(fragmentMap.get(R.id.list2))).commit();
     }
 
     @Override
@@ -36,14 +40,12 @@ public class EventsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_events, container, false);
 
-        eventNavbar = view.findViewById(R.id.eventNavbar);
+        BottomNavigationView eventNavbar = view.findViewById(R.id.eventNavbar);
         FragmentManager fragmentManager = getParentFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.eventContainer, fragmentMap.get(R.id.list2)).commit();
-
         eventNavbar.setOnItemSelectedListener(item -> {
             Fragment f = fragmentMap.get(item.getItemId());
             if (f == null) {
-                Toast.makeText(getContext(),"WTFF", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"Null Fragment", Toast.LENGTH_SHORT).show();
                 return false;
             }
             fragmentManager.beginTransaction().replace(R.id.eventContainer, f).commit();

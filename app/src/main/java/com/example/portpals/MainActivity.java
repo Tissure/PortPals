@@ -22,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,8 +31,7 @@ public class MainActivity extends AppCompatActivity {
     public static final DatabaseReference databaseReference = firebaseDatabase.getReference();
     public static Context context;
 
-    private BottomNavigationView bottomNavBar;
-    private Map<Integer, Fragment> fragmentMap;
+    private final Map<Integer, Fragment> fragmentMap;
 
     public MainActivity() {
         fragmentMap = new HashMap<>();
@@ -55,8 +55,8 @@ public class MainActivity extends AppCompatActivity {
         if (currentUser != null) {
             System.out.println("user signed in!");
             System.out.println(currentUser.getEmail());
-            bottomNavBar = findViewById(R.id.bottomNavBar);
-            getSupportFragmentManager().beginTransaction().replace(R.id.container, fragmentMap.get(R.id.home)).commit();
+            BottomNavigationView bottomNavBar = findViewById(R.id.bottomNavBar);
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, Objects.requireNonNull(fragmentMap.get(R.id.home))).commit();
 
             bottomNavBar.setOnItemSelectedListener(item -> {
                     Fragment f = fragmentMap.get(item.getItemId());
@@ -71,9 +71,6 @@ public class MainActivity extends AppCompatActivity {
             Intent goSignIn = new Intent(this, SignInActivity.class);
             startActivity(goSignIn);
         }
-
-
-
     }
 
     public static Context getContext(){

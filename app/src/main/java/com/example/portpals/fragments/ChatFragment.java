@@ -24,6 +24,7 @@ import com.example.portpals.models.Event;
 import com.example.portpals.recycleradapters.ChatRecyclerAdapter;
 import com.example.portpals.util.AirportsInfoManager;
 import com.example.portpals.util.ClickListener;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -31,6 +32,8 @@ import com.google.firebase.database.Query;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class ChatFragment extends Fragment implements ClickListener {
@@ -38,7 +41,6 @@ public class ChatFragment extends Fragment implements ClickListener {
     private final int[] profilePics = {R.drawable.chad, R.drawable.crazy, R.drawable.vibe};
     private ArrayList<Event> eventList;
     private RecyclerView recyclerView;
-
 
     private void initEventList() {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -69,6 +71,8 @@ public class ChatFragment extends Fragment implements ClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chatrooms, container, false);
+
+
         Button createEventBtn = view.findViewById(R.id.createEventBtn);
         createEventBtn.setOnClickListener(view1 -> {
             Intent intent = new Intent(getActivity(), CreateEventActivity.class);
