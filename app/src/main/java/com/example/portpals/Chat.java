@@ -86,6 +86,7 @@ public class Chat extends AppCompatActivity {
                     if(snapshot.child("Chat").child(iata).child(chatType).child(chatID).hasChild("messages")) {
                         chatLists.clear();
                         for(DataSnapshot messagesSnapshot : snapshot.child("Chat").child(iata).child(chatType).child(chatID).child("messages").getChildren()){
+
                             if(messagesSnapshot.hasChild("msg")) {
 
                                 final String messageTimeStamps = messagesSnapshot.getKey();
@@ -114,6 +115,7 @@ public class Chat extends AppCompatActivity {
                 Log.d("Crashed while reading chat", error.getMessage());
             }
         });
+
 //        databaseReference.addValueEventListener(new ValueEventListener() {
 //            @Override
 //            public void onDataChange(@NonNull DataSnapshot snapshot) {

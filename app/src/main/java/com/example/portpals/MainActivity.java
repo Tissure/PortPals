@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     public MainActivity() {
         fragmentMap = new HashMap<>();
         fragmentMap.put(R.id.home, new HomeFragment());
-        fragmentMap.put(R.id.chat, new EventsFragment());
+        fragmentMap.put(R.id.events, new EventsFragment());
         fragmentMap.put(R.id.globalChat, new GlobalChat());
         fragmentMap.put(R.id.profile, new ProfileFragment());
     }
@@ -60,7 +60,15 @@ public class MainActivity extends AppCompatActivity {
                 if (f == null) {
                     return false;
                 }
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, f).commit();
+                if(item.getItemId() == R.id.globalChat) {
+                    Intent intent = new Intent(this, Chat.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("chatType", "airportChat");
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                } else {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container, f).commit();
+                }
                 return true;
             });
         } else {
@@ -70,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public static Context getContext(){
+    public static Context getContext() {
         return context;
     }
 
