@@ -121,10 +121,12 @@ public class Chat extends AppCompatActivity {
             public void onClick(View view) {
                 final String getTxtMessage = messageEditText.getText().toString();
                 final String currentTimestamp = String.valueOf(System.currentTimeMillis()).substring(0, 10);
+                if(!getTxtMessage.isEmpty()){
+                    databaseReference.child("Chat").child(iata).child(chatType).child(chatID).child("messages").child(currentTimestamp).child("msg").setValue(getTxtMessage);
+                    databaseReference.child("Chat").child(iata).child(chatType).child(chatID).child("messages").child(currentTimestamp).child("UID").setValue(UID);
+                    chattingRecyclerView.scrollToPosition(chatLists.size()-1);
+                }
 
-                databaseReference.child("Chat").child(iata).child(chatType).child(chatID).child("messages").child(currentTimestamp).child("msg").setValue(getTxtMessage);
-                databaseReference.child("Chat").child(iata).child(chatType).child(chatID).child("messages").child(currentTimestamp).child("UID").setValue(UID);
-                chattingRecyclerView.scrollToPosition(chatLists.size()-1);
                 // clear edit Text
                 messageEditText.setText("");
             }
