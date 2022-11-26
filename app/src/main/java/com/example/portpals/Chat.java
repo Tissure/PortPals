@@ -116,19 +116,6 @@ public class Chat extends AppCompatActivity {
             }
         });
 
-//        databaseReference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//
-//                chattingRecyclerView.scrollToPosition(chatLists.size()-1);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                Log.d("Crashed while reading chat", error.getMessage());
-//            }
-//        });
-
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
