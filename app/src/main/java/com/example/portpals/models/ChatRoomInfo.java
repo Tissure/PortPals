@@ -126,5 +126,4 @@ public class ChatRoomInfo implements Parcelable {
                 ", imageId=" + imageId +
                 '}';
     }
-
 }

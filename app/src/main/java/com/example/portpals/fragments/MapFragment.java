@@ -50,21 +50,20 @@ public class MapFragment extends Fragment {
                 db.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Double airportLat = snapshot.child("Airports").child(iata).child("lat").getValue(Double.class);
+                        Double airportLon = snapshot.child("Airports").child(iata).child("lon").getValue(Double.class);
+                        LatLng airport = new LatLng(airportLat,airportLon);
+                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(airport,13));
                         if(snapshot.hasChild("Events")) {
-                            Double airportLat = snapshot.child("Airports").child(iata).child("lat").getValue(Double.class);
-                            Double airportLon = snapshot.child("Airports").child(iata).child("lon").getValue(Double.class);
-                            LatLng airport = new LatLng(airportLat,airportLon);
-                            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(airport,13));
+                            for(DataSnapshot eventSnapShot : snapshot.child("Events").child(iata).getChildren()) {
 
-                                for(DataSnapshot eventSnapShot : snapshot.child("Events").getChildren()) {
-
-                                    double latitude = Double.parseDouble(Objects.requireNonNull(eventSnapShot.child("latitude").getValue(String.class)));
-                                    double longitude = Double.parseDouble(Objects.requireNonNull(eventSnapShot.child("longitude").getValue(String.class)));
-                                    String eventName = eventSnapShot.child("name").getValue(String.class);
-                                    LatLng event = new LatLng(latitude, longitude);
-                                    googleMap.addMarker(new MarkerOptions().position(event).title(eventName));
-                                }
+                                double latitude = Double.parseDouble(Objects.requireNonNull(eventSnapShot.child("latitude").getValue(String.class)));
+                                double longitude = Double.parseDouble(Objects.requireNonNull(eventSnapShot.child("longitude").getValue(String.class)));
+                                String eventName = eventSnapShot.child("name").getValue(String.class);
+                                LatLng event = new LatLng(latitude, longitude);
+                                googleMap.addMarker(new MarkerOptions().position(event).title(eventName));
                             }
+                        }
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {

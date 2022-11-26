@@ -105,7 +105,7 @@ public class CreateEventSummaryActivity extends AppCompatActivity {
 
                 // upload the event to the firebase database
                 assert id != null;
-                databaseReference.child("Events").child(id).setValue(newEvent);
+                databaseReference.child("Events").child(iata).child(id).setValue(newEvent);
             }
         });
     }

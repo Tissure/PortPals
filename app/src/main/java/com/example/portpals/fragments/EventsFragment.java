@@ -21,17 +21,19 @@ import java.util.Objects;
 
 public class EventsFragment extends Fragment {
 
-    private Map<Integer, Fragment> fragmentMap;
+    private final Map<Integer, Fragment> fragmentMap;
 
+    public EventsFragment() {
+        fragmentMap = new HashMap<>();
+        fragmentMap.put(R.id.list2, new ChatFragment());
+        fragmentMap.put(R.id.map2, new MapFragment());
+    }
 
     @Override
     public void onResume() {
         super.onResume();
-        fragmentMap = new HashMap<>();
-        fragmentMap.put(R.id.list2, new ChatFragment());
-        fragmentMap.put(R.id.map2, new MapFragment());
         Toast.makeText(getContext(),"RESUME",Toast.LENGTH_SHORT).show();
-        getParentFragmentManager().beginTransaction().replace(R.id.eventContainer, Objects.requireNonNull(fragmentMap.get(R.id.list2))).commit();
+//        getParentFragmentManager().beginTransaction().replace(R.id.eventContainer, Objects.requireNonNull(fragmentMap.get(R.id.list2))).commit();
     }
 
     @Override
@@ -42,6 +44,8 @@ public class EventsFragment extends Fragment {
 
         BottomNavigationView eventNavbar = view.findViewById(R.id.eventNavbar);
         FragmentManager fragmentManager = getParentFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.eventContainer, Objects.requireNonNull(fragmentMap.get(R.id.list2))).commit();
+
         eventNavbar.setOnItemSelectedListener(item -> {
             Fragment f = fragmentMap.get(item.getItemId());
             if (f == null) {

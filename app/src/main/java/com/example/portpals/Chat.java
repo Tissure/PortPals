@@ -69,7 +69,7 @@ public class Chat extends AppCompatActivity {
 
         // Choose which chat to display
         if(bundle.getString("chatType").equals("Events")) {
-            chatType = bundle.getString("chatType");
+            chatType = "EventChat";
             chatID = bundle.getString("chatID");
             chatroomName = bundle.getString("chatName")  + " Chat";
             chatName.setText(chatroomName);
@@ -82,10 +82,10 @@ public class Chat extends AppCompatActivity {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.hasChild("Airports")) {
-                    if(snapshot.child("Airports").child(iata).child(chatType).child(chatID).hasChild("messages")) {
+                if(snapshot.hasChild("Chat")) {
+                    if(snapshot.child("Chat").child(iata).child(chatType).child(chatID).hasChild("messages")) {
                         chatLists.clear();
-                        for(DataSnapshot messagesSnapshot : snapshot.child("Airports").child(iata).child(chatType).child(chatID).child("messages").getChildren()){
+                        for(DataSnapshot messagesSnapshot : snapshot.child("Chat").child(iata).child(chatType).child(chatID).child("messages").getChildren()){
                             if(messagesSnapshot.hasChild("msg")) {
 
                                 final String messageTimeStamps = messagesSnapshot.getKey();
@@ -133,8 +133,8 @@ public class Chat extends AppCompatActivity {
                 final String getTxtMessage = messageEditText.getText().toString();
                 final String currentTimestamp = String.valueOf(System.currentTimeMillis()).substring(0, 10);
 
-                databaseReference.child("Airports").child(iata).child(chatType).child(chatID).child("messages").child(currentTimestamp).child("msg").setValue(getTxtMessage);
-                databaseReference.child("Airports").child(iata).child(chatType).child(chatID).child("messages").child(currentTimestamp).child("UID").setValue(UID);
+                databaseReference.child("Chat").child(iata).child(chatType).child(chatID).child("messages").child(currentTimestamp).child("msg").setValue(getTxtMessage);
+                databaseReference.child("Chat").child(iata).child(chatType).child(chatID).child("messages").child(currentTimestamp).child("UID").setValue(UID);
                 chattingRecyclerView.scrollToPosition(chatLists.size()-1);
                 // clear edit Text
                 messageEditText.setText("");

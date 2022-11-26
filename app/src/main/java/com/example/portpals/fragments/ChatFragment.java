@@ -42,18 +42,19 @@ public class ChatFragment extends Fragment implements ClickListener {
     private ArrayList<Event> eventList;
     private RecyclerView recyclerView;
 
+
     private void initEventList() {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         Query eventsQuery = databaseReference.child("Events");
         String iata = FlightInfoFragment.getIata();
         eventsQuery.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                for (DataSnapshot child : task.getResult().getChildren()) {
-                    if(Objects.equals(child.child("iata").getValue(String.class), iata)) {
-                        Gson gson = new Gson();
-                        Event currentEvent = gson.fromJson(gson.toJson(child.getValue()), Event.class);
-                        eventList.add(currentEvent);
-                    }
+                for (DataSnapshot child : task.getResult().child(iata).getChildren()) {
+
+                    Gson gson = new Gson();
+                    Event currentEvent = gson.fromJson(gson.toJson(child.getValue()), Event.class);
+                    eventList.add(currentEvent);
+
                 }
                 ChatRecyclerAdapter adapter = new ChatRecyclerAdapter(eventList);
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -71,8 +72,6 @@ public class ChatFragment extends Fragment implements ClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chatrooms, container, false);
-
-
         Button createEventBtn = view.findViewById(R.id.createEventBtn);
         createEventBtn.setOnClickListener(view1 -> {
             Intent intent = new Intent(getActivity(), CreateEventActivity.class);
