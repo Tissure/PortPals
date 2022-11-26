@@ -41,7 +41,7 @@ public class MapFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_map, container, false);
-        String iata = Chat.getIata();
+        String iata = FlightInfoFragment.getIata();
 
         SupportMapFragment supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         supportMapFragment.getMapAsync(new OnMapReadyCallback() {
@@ -55,7 +55,9 @@ public class MapFragment extends Fragment {
                             Double airportLon = snapshot.child("Airports").child(iata).child("lon").getValue(Double.class);
                             LatLng airport = new LatLng(airportLat,airportLon);
                             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(airport,13));
+
                                 for(DataSnapshot eventSnapShot : snapshot.child("Events").getChildren()) {
+
                                     double latitude = Double.parseDouble(Objects.requireNonNull(eventSnapShot.child("latitude").getValue(String.class)));
                                     double longitude = Double.parseDouble(Objects.requireNonNull(eventSnapShot.child("longitude").getValue(String.class)));
                                     String eventName = eventSnapShot.child("name").getValue(String.class);
@@ -63,7 +65,7 @@ public class MapFragment extends Fragment {
                                     googleMap.addMarker(new MarkerOptions().position(event).title(eventName));
                                 }
                             }
-                        }
+                    }
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
 

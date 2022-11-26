@@ -42,6 +42,7 @@ public class FlightInfoFragment extends Fragment {
     public static FlightInfoFragment newInstance() {
         return new FlightInfoFragment();
     }
+    public static String iata;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -99,6 +100,7 @@ public class FlightInfoFragment extends Fragment {
         TextView arrivalTextView = view.findViewById(R.id.arrival_airport);
         arrivalTextView.setText(flight.getArrival().getIata());
 
+        setIata(flight.getDeparture().getIata());
         TextView departureTimeTextView = view.findViewById(R.id.departure_time);
         String departureTime = DateFormat.format("HH:mm", parseDate(flight.getDeparture().getScheduled())).toString();
         departureTimeTextView.setText(departureTime);
@@ -148,5 +150,13 @@ public class FlightInfoFragment extends Fragment {
             return null;
         }
         return json;
+    }
+
+    public static String getIata() {
+        return iata;
+    }
+
+    public static void setIata(String iata) {
+        FlightInfoFragment.iata = iata;
     }
 }

@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.portpals.Chat;
 import com.example.portpals.CreateEventActivity;
+import com.example.portpals.MainActivity;
 import com.example.portpals.R;
 import com.example.portpals.models.Event;
 import com.example.portpals.recycleradapters.ChatRecyclerAdapter;
@@ -39,8 +42,8 @@ public class ChatFragment extends Fragment implements ClickListener {
 
     private void initEventList() {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        String iata = Chat.getIata();
         Query eventsQuery = databaseReference.child("Events");
+        String iata = FlightInfoFragment.getIata();
         eventsQuery.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (DataSnapshot child : task.getResult().getChildren()) {

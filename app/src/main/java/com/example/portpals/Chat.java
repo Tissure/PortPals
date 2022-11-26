@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.portpals.chat.ChatAdapter;
 import com.example.portpals.chat.ChatList;
+import com.example.portpals.fragments.FlightInfoFragment;
 import com.example.portpals.models.Event;
 import com.example.portpals.util.AirportsInfoManager;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,26 +37,23 @@ public class Chat extends AppCompatActivity {
     public static final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     public static final DatabaseReference databaseReference = firebaseDatabase.getReference();
 
+
     private final List<ChatList> chatLists = new ArrayList<>();
     private RecyclerView chattingRecyclerView;
     private ChatAdapter chatAdapter;
-    private static final String iata = AirportsInfoManager.getInstance().getDeparture().getValue().getIata();
 
-    public static String getIata() {
-        return iata;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        String iata = FlightInfoFragment.getIata();
 
         final String UID = firebaseAuth.getCurrentUser().getUid();
         final ImageView backBtn = findViewById(R.id.backBtn);
         final TextView chatName = findViewById(R.id.chatName);
         final EditText messageEditText = findViewById(R.id.messageEditTxt);
         final ImageView sendBtn = findViewById(R.id.sendBtn);
-
         // Setting up chat recycler view
         chattingRecyclerView = findViewById(R.id.chattingRecyclerView);
         chattingRecyclerView.setHasFixedSize(true);
@@ -103,12 +101,12 @@ public class Chat extends AppCompatActivity {
                                 ChatList chatList = new ChatList(getUID, getDisplayName,getMsg, simpleDateFormat.format(date), simpleTimeFormat.format(date));
                                 chatLists.add(chatList);
                                 chatAdapter.updateChatList(chatLists);
-
                             }
                         }
-                        chattingRecyclerView.scrollToPosition(chatLists.size()-1);
                     }
                 }
+                chattingRecyclerView.scrollToPosition(chatLists.size()-1);
+
             }
 
             @Override

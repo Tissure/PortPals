@@ -2,21 +2,17 @@ package com.example.portpals;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.portpals.chat.ChatAdapter;
-import com.example.portpals.chat.ChatList;
 import com.example.portpals.fragments.ChatFragment;
 import com.example.portpals.fragments.EventFragment;
+import com.example.portpals.fragments.EventsFragment;
 import com.example.portpals.fragments.GlobalChat;
 import com.example.portpals.fragments.HomeFragment;
-import com.example.portpals.fragments.MapFragment;
 import com.example.portpals.fragments.ProfileFragment;
-import com.example.portpals.util.AirportsInfoManager;
 import com.example.portpals.util.FlightInfoManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,9 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -42,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     public MainActivity() {
         fragmentMap = new HashMap<>();
         fragmentMap.put(R.id.home, new HomeFragment());
-        fragmentMap.put(R.id.chat, new MapFragment());
+        fragmentMap.put(R.id.chat, new EventsFragment());
         fragmentMap.put(R.id.globalChat, new GlobalChat());
         fragmentMap.put(R.id.event, new EventFragment());
         fragmentMap.put(R.id.profile, new ProfileFragment());
