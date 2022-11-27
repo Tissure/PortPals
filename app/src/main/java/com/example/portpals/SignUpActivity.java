@@ -5,21 +5,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.portpals.models.User;
+import com.example.portpals.util.FileService;
 import com.example.portpals.util.Validator;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -34,8 +30,6 @@ public class SignUpActivity extends AppCompatActivity {
     private Button uploadProfilePictureButton;
 
     private Uri uri;
-    private static FirebaseStorage storage = FirebaseStorage.getInstance();
-    private static StorageReference storageReference = storage.getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +57,7 @@ public class SignUpActivity extends AppCompatActivity {
         profileImageView = findViewById(R.id.profileImageView);
         uploadProfilePictureButton = findViewById(R.id.uploadProfilePictureButton);
         uploadProfilePictureButton.setOnClickListener(view -> {
-            selectImage();
+            FileService.selectImage(this);
         });
 
         // add go back to sign in button functionality
@@ -72,37 +66,6 @@ public class SignUpActivity extends AppCompatActivity {
             Intent intent = new Intent(this, SignInActivity.class);
             startActivity(intent);
         });
-    }
-
-    private void selectImage() {
-        // Defining Implicit Intent to mobile gallery
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-
-        // this method works for the intent, but is deprecated, try find a better one if possible
-        startActivityForResult(intent, 1);
-    }
-
-    private void uploadImage(String key) {
-        StorageReference profilePictureRef = storageReference.child("images/" + key);
-
-        final ProgressBar progressBar = new ProgressBar(this);
-        progressBar.setTag("Uploading Image...");
-        progressBar.setVisibility(View.VISIBLE);
-
-        profilePictureRef.putFile(uri).addOnSuccessListener(taskSnapshot -> {
-            Snackbar.make(findViewById(android.R.id.content), "Image Uploaded.", Snackbar.LENGTH_LONG).show();
-                    progressBar.invalidate();
-            })
-            .addOnFailureListener(e -> {
-                Toast.makeText(getApplicationContext(), "Failed to upload a profile picture", Toast.LENGTH_LONG).show();
-                progressBar.invalidate();
-            })
-            .addOnProgressListener(snapshot -> {
-                double progressPercent = (100.00 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
-                progressBar.setProgress((int)progressPercent);
-            });
     }
 
     @Override
@@ -152,7 +115,7 @@ public class SignUpActivity extends AppCompatActivity {
                             });
 
                     // if the user successfully logged in, then upload the image asynchronously
-                    uploadImage(userKey);
+                    FileService.uploadImage(userKey, uri, this);
 
                     // send the user to the main page if they have logged in successfully
                     Intent intent = new Intent(this, MainActivity.class);

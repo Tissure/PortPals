@@ -3,27 +3,90 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="-24dp"
     android:orientation="vertical">
 
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp" />
+        android:layout_marginTop="25dp"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/ic_baseline_account_circle_24"
+        android:id="@+id/edit_profile_picture"
+        android:layout_width="200dp"
+        android:layout_height="200dp" />
 
     <Button
+        android:id="@+id/edit_profile_picture_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="20sp"
+        android:text="Change Profile Picture"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="25dp">
+
+        <TextView
+            android:width="150dp"
+            android:id="@+id/displayNameTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Display name"
+            android:textSize="20sp" />
+
+        <EditText
+            android:layout_toRightOf="@id/displayNameTv"
+            android:id="@+id/edit_display_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:hint="Enter new display name"
+            android:textSize="20sp"/>
+    </RelativeLayout>
+
+<!--    <RelativeLayout-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="25dp">-->
+
+<!--        <TextView-->
+<!--            android:width="150dp"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textSize="20sp"-->
+<!--            android:text="Password"-->
+<!--            android:id="@+id/passwordTv"/>-->
+
+<!--        <EditText-->
+<!--            android:layout_toRightOf="@+id/passwordTv"-->
+<!--            android:id="@+id/edit_password"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:hint="Enter new password"-->
+<!--            android:textSize="20sp"-->
+<!--            android:text="" />-->
+<!--    </RelativeLayout>-->
+
+    <Button
+        android:id="@+id/update_profile_button"
+        android:layout_marginTop="50dp"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Edit Profile"
-        android:textSize="15sp"/>
+        android:text="Update Profile"
+        android:textSize="22sp" />
 
     <Button
+        android:layout_marginTop="25dp"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/event_history"
-        android:textSize="15sp" />
-
+        android:id="@+id/edit_cancel"
+        android:text="Cancel"
+        android:textSize="22sp" />
 
 </LinearLayout>
