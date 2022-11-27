@@ -10,7 +10,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chatRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@id/eventNavbar"/>
+
     <Button
         android:id="@+id/createEventBtn"
         android:layout_width="50dp"
@@ -21,6 +23,10 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="50dp"
         android:layout_marginEnd="50dp" />
-
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/eventNavbar"
+        android:id="@+id/eventContainer" />
 
 </RelativeLayout>

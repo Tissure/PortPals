@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.portpals.fragments.FlightInfoFragment;
 import com.example.portpals.models.Airport;
 import com.example.portpals.models.Event;
 import com.example.portpals.models.User;
@@ -22,6 +23,8 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 
 public class CreateEventSummaryActivity extends AppCompatActivity {
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +75,7 @@ public class CreateEventSummaryActivity extends AppCompatActivity {
     private void uploadEvent() {
         Bundle bundle = getIntent().getExtras();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        String iata = AirportsInfoManager.getInstance().getDeparture().getValue().getIata();
+        String iata = FlightInfoFragment.getIata();
 
         // gather the event info and make a new event JSON object and add it to the events list under the specific IATA
         Event newEvent = new Event();
@@ -86,6 +89,7 @@ public class CreateEventSummaryActivity extends AppCompatActivity {
         newEvent.setLatitude(bundle.getString("lat"));
         newEvent.setLongitude(bundle.getString("lng"));
         newEvent.setDescription(bundle.getString("desc"));
+        newEvent.setIata(iata);
 
         // obtain the current logged in user's data and shove it in the event
         Query creatorUserQuery = databaseReference.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -100,7 +104,8 @@ public class CreateEventSummaryActivity extends AppCompatActivity {
                 }
 
                 // upload the event to the firebase database
-                databaseReference.child("Airports").child(iata).child("Events").child(id).setValue(newEvent);
+                assert id != null;
+                databaseReference.child("Events").child(iata).child(id).setValue(newEvent);
             }
         });
     }

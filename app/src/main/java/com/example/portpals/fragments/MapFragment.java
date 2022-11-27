@@ -41,7 +41,7 @@ public class MapFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_map, container, false);
-        String iata = Chat.getIata();
+        String iata = FlightInfoFragment.getIata();
 
         SupportMapFragment supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         supportMapFragment.getMapAsync(new OnMapReadyCallback() {
@@ -50,23 +50,18 @@ public class MapFragment extends Fragment {
                 db.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if(snapshot.hasChild("Airports")) {
-                            if(snapshot.child("Airports").child(iata).hasChild("lat")) {
-                                Double airportLat = snapshot.child("Airports").child(iata).child("lat").getValue(Double.class);
-                                Double airportLon = snapshot.child("Airports").child(iata).child("lon").getValue(Double.class);
-                                LatLng airport = new LatLng(airportLat,airportLon);
-                                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(airport,13));
-                                if(snapshot.child("Airports").child(iata).hasChild("Events")){
-                                    for(DataSnapshot eventSnapShot : snapshot.child("Airports").child(iata).child("Events").getChildren()) {
+                        Double airportLat = snapshot.child("Airports").child(iata).child("lat").getValue(Double.class);
+                        Double airportLon = snapshot.child("Airports").child(iata).child("lon").getValue(Double.class);
+                        LatLng airport = new LatLng(airportLat,airportLon);
+                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(airport,13));
+                        if(snapshot.hasChild("Events")) {
+                            for(DataSnapshot eventSnapShot : snapshot.child("Events").child(iata).getChildren()) {
 
-                                        double latitude = Double.parseDouble(Objects.requireNonNull(eventSnapShot.child("latitude").getValue(String.class)));
-                                        double longitude = Double.parseDouble(Objects.requireNonNull(eventSnapShot.child("longitude").getValue(String.class)));
-                                        String eventName = eventSnapShot.child("name").getValue(String.class);
-                                        LatLng event = new LatLng(latitude, longitude);
-                                        googleMap.addMarker(new MarkerOptions().position(event).title(eventName));
-                                    }
-                                }
-
+                                double latitude = Double.parseDouble(Objects.requireNonNull(eventSnapShot.child("latitude").getValue(String.class)));
+                                double longitude = Double.parseDouble(Objects.requireNonNull(eventSnapShot.child("longitude").getValue(String.class)));
+                                String eventName = eventSnapShot.child("name").getValue(String.class);
+                                LatLng event = new LatLng(latitude, longitude);
+                                googleMap.addMarker(new MarkerOptions().position(event).title(eventName));
                             }
                         }
                     }

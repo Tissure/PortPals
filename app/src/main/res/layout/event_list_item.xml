@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/eventListItemLayout"
-    android:id="@+id/rootLayout">
+    android:id="@+id/rootLayout"
+    android:background="@drawable/eventlist_background">
 
     <TextView
         android:layout_marginTop="10dp"
@@ -63,9 +64,10 @@
         android:layout_height="wrap_content"
         android:text="@string/participants"
         android:textSize="20sp"
-        android:layout_below="@+id/roomTime"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="10dp" />
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"/>
 
     <TextView
         android:id="@+id/roomTime"
@@ -73,9 +75,9 @@
         android:layout_height="wrap_content"
         android:text="@string/default_time"
         android:textSize="20sp"
-        android:layout_alignParentTop="true"
+
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginEnd="20dp"
+        android:layout_above="@id/participants"/>
 
 </RelativeLayout>

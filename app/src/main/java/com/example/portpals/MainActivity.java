@@ -2,21 +2,15 @@ package com.example.portpals;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.portpals.chat.ChatAdapter;
-import com.example.portpals.chat.ChatList;
-import com.example.portpals.fragments.ChatFragment;
-import com.example.portpals.fragments.EventFragment;
+import com.example.portpals.fragments.EventsFragment;
 import com.example.portpals.fragments.GlobalChat;
 import com.example.portpals.fragments.HomeFragment;
-import com.example.portpals.fragments.MapFragment;
 import com.example.portpals.fragments.ProfileFragment;
-import com.example.portpals.util.AirportsInfoManager;
 import com.example.portpals.util.FlightInfoManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,10 +18,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,15 +29,13 @@ public class MainActivity extends AppCompatActivity {
     public static final DatabaseReference databaseReference = firebaseDatabase.getReference();
     public static Context context;
 
-    private BottomNavigationView bottomNavBar;
-    private Map<Integer, Fragment> fragmentMap;
+    private final Map<Integer, Fragment> fragmentMap;
 
     public MainActivity() {
         fragmentMap = new HashMap<>();
         fragmentMap.put(R.id.home, new HomeFragment());
-        fragmentMap.put(R.id.chat, new ChatFragment());
+        fragmentMap.put(R.id.events, new EventsFragment());
         fragmentMap.put(R.id.globalChat, new GlobalChat());
-        fragmentMap.put(R.id.event, new EventFragment());
         fragmentMap.put(R.id.profile, new ProfileFragment());
     }
 
@@ -61,15 +52,23 @@ public class MainActivity extends AppCompatActivity {
         if (currentUser != null) {
             System.out.println("user signed in!");
             System.out.println(currentUser.getEmail());
-            bottomNavBar = findViewById(R.id.bottomNavBar);
-            getSupportFragmentManager().beginTransaction().replace(R.id.container, fragmentMap.get(R.id.home)).commit();
+            BottomNavigationView bottomNavBar = findViewById(R.id.bottomNavBar);
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, Objects.requireNonNull(fragmentMap.get(R.id.home))).commit();
 
             bottomNavBar.setOnItemSelectedListener(item -> {
                     Fragment f = fragmentMap.get(item.getItemId());
                 if (f == null) {
                     return false;
                 }
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, f).commit();
+                if(item.getItemId() == R.id.globalChat) {
+                    Intent intent = new Intent(this, Chat.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("chatType", "airportChat");
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                } else {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container, f).commit();
+                }
                 return true;
             });
         } else {
@@ -77,12 +76,9 @@ public class MainActivity extends AppCompatActivity {
             Intent goSignIn = new Intent(this, SignInActivity.class);
             startActivity(goSignIn);
         }
-
-
-
     }
 
-    public static Context getContext(){
+    public static Context getContext() {
         return context;
     }
 
