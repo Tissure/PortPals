@@ -10,8 +10,6 @@ import android.widget.Toast;
 
 import com.example.portpals.fragments.EventsFragment;
 import com.example.portpals.fragments.FlightInfoFragment;
-import com.example.portpals.fragments.GlobalChat;
-import com.example.portpals.fragments.HomeFragment;
 import com.example.portpals.fragments.ProfileFragment;
 import com.example.portpals.util.FlightInfoManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -37,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentMap = new HashMap<>();
         fragmentMap.put(R.id.home, new FlightInfoFragment());
         fragmentMap.put(R.id.events, new EventsFragment());
-        fragmentMap.put(R.id.globalChat, new GlobalChat());
+        fragmentMap.put(R.id.globalChat, null);
         fragmentMap.put(R.id.profile, new ProfileFragment());
     }
 
