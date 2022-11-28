@@ -119,8 +119,6 @@ public class SignUpActivity extends AppCompatActivity {
                         FileService.uploadImage(userKey, uri, this);
                     }
 
-
-
                     // send the user to the main page if they have logged in successfully
                     Intent intent = new Intent(this, MainActivity.class);
                     startActivity(intent);
