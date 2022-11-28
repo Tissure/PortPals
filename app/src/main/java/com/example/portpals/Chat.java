@@ -130,10 +130,6 @@ public class Chat extends AppCompatActivity {
             messageEditText.setText("");
         });
 
-        backBtn.setOnClickListener(view -> {
-            chatAdapter = null;
-            chatLists.clear();
-            finish();}
-        );
+        backBtn.setOnClickListener(view -> finish());
     }
 }

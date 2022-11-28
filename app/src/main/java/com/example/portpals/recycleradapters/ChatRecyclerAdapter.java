@@ -73,8 +73,8 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
 
         // set the profile picture if it exists
         if (user != null) {
-            StorageReference profilePictureRef = storageReference.child("images/" + user.getProfilePictureKey());
-            if (profilePictureRef != null) {
+            if (user.getProfilePictureKey() != null) {
+                StorageReference profilePictureRef = storageReference.child("images/" + user.getProfilePictureKey());
                 profilePictureRef.getDownloadUrl().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Picasso.get().load(task.getResult()).into(holder.profile_picture);

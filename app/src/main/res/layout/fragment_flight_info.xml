@@ -219,10 +219,6 @@
                 android:id="@+id/weatherTextView" />
         </LinearLayout>
 
-
-
-
-
     </RelativeLayout>
 
 </LinearLayout>

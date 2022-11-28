@@ -53,14 +53,11 @@ import java.util.Map;
 
 public class FlightInfoFragment extends Fragment {
 
-    TextView weatherView;
-    //    http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=61ecd5de90be5cf0137e8f56761899b2
     private final String url = "http://api.openweathermap.org/data/2.5/weather";
-    private final String appid = "61ecd5de90be5cf0137e8f56761899b2";
+    private final String appid = "32546a0ed3910e6ddd426ddd0de72d0f";
     DecimalFormat df = new DecimalFormat("#.##");
-//    private String city;
-    DatabaseReference db = MainActivity.databaseReference;
 
+    public static FlightInfo flightInfoMain;
     public static FlightInfoFragment newInstance() {
         return new FlightInfoFragment();
     }
@@ -72,11 +69,6 @@ public class FlightInfoFragment extends Fragment {
         System.out.println("FlightInfoFrag made");
         View view = inflater.inflate(R.layout.fragment_flight_info, container, false);
 
-
-        weatherView = view.findViewById(R.id.weatherTextView);
-
-//
-//
 //        try {
 //            JSONObject obj = new JSONObject(loadJSONFromFile());
 //            JSONArray data = obj.getJSONArray("data");
@@ -93,8 +85,8 @@ public class FlightInfoFragment extends Fragment {
 //        } catch (JSONException e) {
 //            e.printStackTrace();
 //        }
-//
-//
+
+
         Button flightNumberButton = view.findViewById(R.id.flightNumberButton);
         flightNumberButton.setOnClickListener(view1 -> {
             EditText flightNumberText = view.findViewById(R.id.flightNumberText);
@@ -104,6 +96,7 @@ public class FlightInfoFragment extends Fragment {
 
             fm.getFlight(flightNo).observe(getActivity(), flightInfo -> {
                 AirportsInfoManager.getInstance(flightInfo.getDeparture().getIata(), flightInfo.getArrival().getIata());
+                setFlightInfoMain(flightInfo);
                 populateFlightInfo(view, flightInfo);
                 AirportsInfoManager.getInstance().getDeparture(flightInfo.getDeparture().getIata()).observe(getActivity(), departure -> {
                     popAirport(view, departure, R.string.popDeparture);
@@ -112,10 +105,35 @@ public class FlightInfoFragment extends Fragment {
                     popAirport(view, arrival, R.string.popArrival);
                 });
             });
-            getWeatherDetails();
         });
-
         return view;
+    }
+
+    public FlightInfo getFlightInfoMain() {
+        return flightInfoMain;
+    }
+
+    public void setFlightInfoMain(FlightInfo flightInfoMain) {
+        this.flightInfoMain = flightInfoMain;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (getFlightInfoMain()!= null ){
+            View view = getView();
+
+            FlightInfo flight = getFlightInfoMain();
+            AirportsInfoManager.getInstance(flight.getDeparture().getIata(), flight.getArrival().getIata());
+            populateFlightInfo(view, flight);
+            AirportsInfoManager.getInstance().getDeparture(flight.getDeparture().getIata()).observe(getActivity(), departure ->{
+                popAirport(view, departure, R.string.popDeparture);
+            });
+            AirportsInfoManager.getInstance().getArrival(flight.getArrival().getIata()).observe(getActivity(), arrival ->{
+                popAirport(view, arrival, R.string.popArrival);
+            });
+        }
     }
 
     private void populateFlightInfo(View view, FlightInfo flight) {
@@ -184,65 +202,4 @@ public class FlightInfoFragment extends Fragment {
         FlightInfoFragment.iata = iata;
     }
 
-    public void getWeatherDetails() {
-        db.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-            String city = snapshot.child("Airports").child(iata).child("city").getValue(String.class);
-            String tempUrl = url + "?q=" + city + "&APPID=" + appid;
-            Toast.makeText(getActivity(), city, Toast.LENGTH_LONG).show();
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, tempUrl, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    String output = "";
-                    try {
-                        JSONObject jsonResponse = new JSONObject(response);
-                        JSONArray jsonArray = jsonResponse.getJSONArray("weather");
-                        JSONObject jsonObjectWeather = jsonArray.getJSONObject(0);
-                        String description = jsonObjectWeather.getString("description");
-                        JSONObject jsonObjectMain = jsonResponse.getJSONObject("main");
-                        double temp = jsonObjectMain.getDouble("temp") - 273.15;
-                        double feelsLike = jsonObjectMain.getDouble("feels_like") - 273.15;
-                        float pressure = jsonObjectMain.getInt("pressure");
-                        int humidity = jsonObjectMain.getInt("humidity");
-                        JSONObject jsonObjectWind = jsonResponse.getJSONObject("wind");
-                        String wind = jsonObjectWind.getString("speed");
-                        JSONObject jsonObjectClouds = jsonResponse.getJSONObject("clouds");
-                        String clouds = jsonObjectClouds.getString("all");
-                        JSONObject jsonObjectSys = jsonResponse.getJSONObject("sys");
-                        String countryName = jsonObjectSys.getString("country");
-                        String cityName = jsonResponse.getString("name");
-//                        weatherView.setTextColor(Color.rgb(68,134,199));
-                        output += "Current weather of " + cityName + " (" + countryName + ")"
-                                + "\n Temp: " + df.format(temp) + " °C"
-                                + "\n Feels Like: " + df.format(feelsLike) + " °C"
-                                + "\n Humidity: " + humidity + "%"
-                                + "\n Description: " + description
-                                + "\n Wind Speed: " + wind + "m/s (meters per second)"
-                                + "\n Cloudiness: " + clouds + "%"
-                                + "\n Pressure: " + pressure + " hPa";
-                        weatherView.setText(output);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }, new Response.ErrorListener(){
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getActivity(), error.toString().trim(), Toast.LENGTH_SHORT).show();
-                }
-            });
-            RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-            requestQueue.add(stringRequest);
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
 }
