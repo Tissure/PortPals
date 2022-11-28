@@ -115,7 +115,11 @@ public class SignUpActivity extends AppCompatActivity {
                             });
 
                     // if the user successfully logged in, then upload the image asynchronously
-                    FileService.uploadImage(userKey, uri, this);
+                    if(uri != null) {
+                        FileService.uploadImage(userKey, uri, this);
+                    }
+
+
 
                     // send the user to the main page if they have logged in successfully
                     Intent intent = new Intent(this, MainActivity.class);

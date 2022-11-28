@@ -1,5 +1,6 @@
 package com.example.portpals.fragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,12 +19,23 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.portpals.MainActivity;
 import com.example.portpals.R;
 import com.example.portpals.models.Airport;
 import com.example.portpals.models.flight.FlightInfo;
 import com.example.portpals.util.AirportsInfoManager;
 import com.example.portpals.util.FlightInfoManager;
 import com.example.portpals.util.RequestListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -32,12 +44,22 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 
 public class FlightInfoFragment extends Fragment {
+
+    TextView weatherView;
+    //    http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=61ecd5de90be5cf0137e8f56761899b2
+    private final String url = "http://api.openweathermap.org/data/2.5/weather";
+    private final String appid = "61ecd5de90be5cf0137e8f56761899b2";
+    DecimalFormat df = new DecimalFormat("#.##");
+//    private String city;
+    DatabaseReference db = MainActivity.databaseReference;
 
     public static FlightInfoFragment newInstance() {
         return new FlightInfoFragment();
@@ -50,38 +72,37 @@ public class FlightInfoFragment extends Fragment {
         System.out.println("FlightInfoFrag made");
         View view = inflater.inflate(R.layout.fragment_flight_info, container, false);
 
-        //TODO DISABLE
-        try {
-            JSONObject obj = new JSONObject(loadJSONFromFile());
-            JSONArray data = obj.getJSONArray("data");
-            FlightInfo flight;
-            flight = new Gson().fromJson(data.getJSONObject(0).toString(), FlightInfo.class);
-            AirportsInfoManager.getInstance(flight.getDeparture().getIata(), flight.getArrival().getIata());
-            populateFlightInfo(view, flight);
-            AirportsInfoManager.getInstance().getDeparture(flight.getDeparture().getIata()).observe(getActivity(), departure ->{
-                popAirport(view, departure, R.string.popDeparture);
-            });
-            AirportsInfoManager.getInstance().getArrival(flight.getArrival().getIata()).observe(getActivity(), arrival ->{
-                popAirport(view, arrival, R.string.popArrival);
-            });
-       } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return view;
-    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        Button flightNumberButton = getView().findViewById(R.id.flightNumberButton);
-        flightNumberButton.setOnClickListener(view -> {
-            EditText flightNumberText = getView().findViewById(R.id.flightNumberText);
-            String flightNumber = flightNumberText.getText().toString().trim();
+        weatherView = view.findViewById(R.id.weatherTextView);
 
-            //String flightNo = "AC793";
-            // Set the updated flight info based on the flight number entered by the user
+//
+//
+//        try {
+//            JSONObject obj = new JSONObject(loadJSONFromFile());
+//            JSONArray data = obj.getJSONArray("data");
+//            FlightInfo flight;
+//            flight = new Gson().fromJson(data.getJSONObject(0).toString(), FlightInfo.class);
+//            AirportsInfoManager.getInstance(flight.getDeparture().getIata(), flight.getArrival().getIata());
+//            populateFlightInfo(view, flight);
+//            AirportsInfoManager.getInstance().getDeparture(flight.getDeparture().getIata()).observe(getActivity(), departure ->{
+//                popAirport(view, departure, R.string.popDeparture);
+//            });
+//            AirportsInfoManager.getInstance().getArrival(flight.getArrival().getIata()).observe(getActivity(), arrival ->{
+//                popAirport(view, arrival, R.string.popArrival);
+//            });
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//
+        Button flightNumberButton = view.findViewById(R.id.flightNumberButton);
+        flightNumberButton.setOnClickListener(view1 -> {
+            EditText flightNumberText = view.findViewById(R.id.flightNumberText);
+            String flightNo = flightNumberText.getText().toString().trim();
+
             FlightInfoManager fm = FlightInfoManager.getInstance();
-            fm.getFlight(flightNumber).observe(getActivity(), flightInfo -> {
+
+            fm.getFlight(flightNo).observe(getActivity(), flightInfo -> {
                 AirportsInfoManager.getInstance(flightInfo.getDeparture().getIata(), flightInfo.getArrival().getIata());
                 populateFlightInfo(view, flightInfo);
                 AirportsInfoManager.getInstance().getDeparture(flightInfo.getDeparture().getIata()).observe(getActivity(), departure -> {
@@ -91,7 +112,10 @@ public class FlightInfoFragment extends Fragment {
                     popAirport(view, arrival, R.string.popArrival);
                 });
             });
+            getWeatherDetails();
         });
+
+        return view;
     }
 
     private void populateFlightInfo(View view, FlightInfo flight) {
@@ -158,5 +182,67 @@ public class FlightInfoFragment extends Fragment {
 
     public static void setIata(String iata) {
         FlightInfoFragment.iata = iata;
+    }
+
+    public void getWeatherDetails() {
+        db.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+            String city = snapshot.child("Airports").child(iata).child("city").getValue(String.class);
+            String tempUrl = url + "?q=" + city + "&APPID=" + appid;
+            Toast.makeText(getActivity(), city, Toast.LENGTH_LONG).show();
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, tempUrl, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    String output = "";
+                    try {
+                        JSONObject jsonResponse = new JSONObject(response);
+                        JSONArray jsonArray = jsonResponse.getJSONArray("weather");
+                        JSONObject jsonObjectWeather = jsonArray.getJSONObject(0);
+                        String description = jsonObjectWeather.getString("description");
+                        JSONObject jsonObjectMain = jsonResponse.getJSONObject("main");
+                        double temp = jsonObjectMain.getDouble("temp") - 273.15;
+                        double feelsLike = jsonObjectMain.getDouble("feels_like") - 273.15;
+                        float pressure = jsonObjectMain.getInt("pressure");
+                        int humidity = jsonObjectMain.getInt("humidity");
+                        JSONObject jsonObjectWind = jsonResponse.getJSONObject("wind");
+                        String wind = jsonObjectWind.getString("speed");
+                        JSONObject jsonObjectClouds = jsonResponse.getJSONObject("clouds");
+                        String clouds = jsonObjectClouds.getString("all");
+                        JSONObject jsonObjectSys = jsonResponse.getJSONObject("sys");
+                        String countryName = jsonObjectSys.getString("country");
+                        String cityName = jsonResponse.getString("name");
+//                        weatherView.setTextColor(Color.rgb(68,134,199));
+                        output += "Current weather of " + cityName + " (" + countryName + ")"
+                                + "\n Temp: " + df.format(temp) + " °C"
+                                + "\n Feels Like: " + df.format(feelsLike) + " °C"
+                                + "\n Humidity: " + humidity + "%"
+                                + "\n Description: " + description
+                                + "\n Wind Speed: " + wind + "m/s (meters per second)"
+                                + "\n Cloudiness: " + clouds + "%"
+                                + "\n Pressure: " + pressure + " hPa";
+                        weatherView.setText(output);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener(){
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getActivity(), error.toString().trim(), Toast.LENGTH_SHORT).show();
+                }
+            });
+            RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+            requestQueue.add(stringRequest);
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

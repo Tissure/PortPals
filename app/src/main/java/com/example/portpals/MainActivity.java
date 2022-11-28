@@ -6,8 +6,10 @@ import androidx.fragment.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.example.portpals.fragments.EventsFragment;
+import com.example.portpals.fragments.FlightInfoFragment;
 import com.example.portpals.fragments.GlobalChat;
 import com.example.portpals.fragments.HomeFragment;
 import com.example.portpals.fragments.ProfileFragment;
@@ -33,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
     public MainActivity() {
         fragmentMap = new HashMap<>();
-        fragmentMap.put(R.id.home, new HomeFragment());
+        fragmentMap.put(R.id.home, new FlightInfoFragment());
         fragmentMap.put(R.id.events, new EventsFragment());
         fragmentMap.put(R.id.globalChat, new GlobalChat());
         fragmentMap.put(R.id.profile, new ProfileFragment());
@@ -56,11 +58,13 @@ public class MainActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, Objects.requireNonNull(fragmentMap.get(R.id.home))).commit();
 
             bottomNavBar.setOnItemSelectedListener(item -> {
-                    Fragment f = fragmentMap.get(item.getItemId());
+                Fragment f = fragmentMap.get(item.getItemId());
                 if (f == null) {
                     return false;
                 }
-                if(item.getItemId() == R.id.globalChat) {
+                if(FlightInfoFragment.getIata() == null) {
+                    Toast.makeText(this, "Must enter flight number first!", Toast.LENGTH_LONG).show();
+                } else if (item.getItemId() == R.id.globalChat) {
                     Intent intent = new Intent(this, Chat.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("chatType", "airportChat");

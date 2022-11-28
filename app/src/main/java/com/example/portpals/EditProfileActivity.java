@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -65,14 +66,14 @@ public class EditProfileActivity extends AppCompatActivity {
             // FirebaseAuth.getInstance().getCurrentUser().updatePassword(password);
 
             // set new profile picture
-            FileService.uploadImage(userKey, uri, this);
-            // take user back to the main activity
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+            if(uri != null ) {
+                FileService.uploadImage(userKey, uri, this);
+                this.finish();
+            };
+            Toast.makeText(this,"No Image selected", Toast.LENGTH_LONG).show();
         });
         cancelButton.setOnClickListener(view -> {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+            this.finish();
         });
         fillEverythingWithCurrentCredentials();
     }
@@ -105,5 +106,4 @@ public class EditProfileActivity extends AppCompatActivity {
             System.out.println("Failed to fetch image");
         }
     }
-
 }
